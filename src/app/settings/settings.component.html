@@ -1,6 +1,6 @@
 <div class="container mt-5">
     <h2>Settings</h2>
-    <form>
+    <form (ngSubmit)="saveSettings()">
       <div class="form-check form-switch mb-3">
         <input class="form-check-input" type="checkbox" id="darkMode" [(ngModel)]="darkMode" name="darkMode">
         <label class="form-check-label" for="darkMode">Dark Mode</label>
@@ -8,6 +8,37 @@
       <div class="form-check form-switch mb-3">
         <input class="form-check-input" type="checkbox" id="notifications" [(ngModel)]="notifications" name="notifications">
         <label class="form-check-label" for="notifications">Enable Notifications</label>
+      </div>
+      <div class="mb-3">
+        <label for="notificationFrequency" class="form-label">Notification Frequency</label>
+        <select id="notificationFrequency" class="form-select" [(ngModel)]="notificationFrequency" name="notificationFrequency">
+          <option value="instant">Instant</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="measurementSystem" class="form-label">Measurement System</label>
+        <select id="measurementSystem" class="form-select" [(ngModel)]="measurementSystem" name="measurementSystem">
+          <option value="metric">Metric</option>
+          <option value="imperial">Imperial</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="weightGoal" class="form-label">Weight Goal (kg)</label>
+        <input type="number" id="weightGoal" class="form-control" [(ngModel)]="weightGoal" name="weightGoal">
+      </div>
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" id="shareProgress" [(ngModel)]="shareProgress" name="shareProgress">
+        <label class="form-check-label" for="shareProgress">Share Progress Publicly</label>
+      </div>
+      <div class="mb-3">
+        <label for="reminderTime" class="form-label">Workout Reminder Time</label>
+        <input type="time" id="reminderTime" class="form-control" [(ngModel)]="reminderTime" name="reminderTime">
+      </div>
+      <div class="mb-3">
+        <label for="calorieGoal" class="form-label">Daily Calorie Goal</label>
+        <input type="number" id="calorieGoal" class="form-control" [(ngModel)]="calorieGoal" name="calorieGoal">
       </div>
       <button type="submit" class="btn btn-primary">Save Settings</button>
     </form>

@@ -1,0 +1,33 @@
+.top-bar {
+    background-color: #0059ff;
+    color: #fff;
+  }
+  
+  .second-bar {
+    background-color: #003a99;
+  }
+  
+  .brand-name {
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+  
+  .nav-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  .btn-outline-light {
+    border-color: #fff;
+    color: #fff;
+  }
+  
+  .btn-outline-light:hover {
+    background-color: #fff;
+    color: #003a99;
+  }
+  

@@ -1,0 +1,18 @@
+<div class="container-fluid bg-light py-3 mt-5">
+    <div class="d-flex justify-content-center mb-2">
+      <a class="me-3 text-decoration-none text-muted" href="#">About</a>
+      <a class="me-3 text-decoration-none text-muted" href="#">Blog</a>
+      <a class="me-3 text-decoration-none text-muted" href="#">Terms</a>
+      <a class="me-3 text-decoration-none text-muted" href="#">Privacy</a>
+      <a class="me-3 text-decoration-none text-muted" href="#">Contact Us</a>
+    </div>
+    <div class="d-flex justify-content-center mb-2">
+      <select class="form-select w-auto" [(ngModel)]="selectedLanguage">
+        <option *ngFor="let lang of languages" [value]="lang.code">{{ lang.name }}</option>
+      </select>
+    </div>
+    <div class="text-center text-muted">
+      © 2025 FitPal, Inc.
+    </div>
+  </div>
+  
