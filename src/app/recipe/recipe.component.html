@@ -1,0 +1,47 @@
+<div class="container mt-5">
+    <h2>Recipe Suggestions</h2>
+  
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="category" class="form-label">Select Category</label>
+        <select
+          id="category"
+          class="form-select"
+          [(ngModel)]="selectedCategory"
+          (change)="onCategoryChange()"
+        >
+          <option value="">All</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="search" class="form-label">Search</label>
+        <input
+          id="search"
+          type="text"
+          class="form-control"
+          placeholder="Search meals..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearchChange()"
+        />
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-4" *ngFor="let meal of meals">
+        <div class="card mb-3">
+          <img [src]="meal.image" class="card-img-top" [alt]="meal.title" />
+          <div class="card-body">
+            <h5 class="card-title">{{ meal.title }}</h5>
+            <p class="card-text">
+              <small class="text-muted">{{ meal.category }}</small>
+            </p>
+            <button class="btn btn-primary" (click)="viewDetails(meal.id)">
+              View Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

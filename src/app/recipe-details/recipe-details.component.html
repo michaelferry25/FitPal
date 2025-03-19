@@ -1,0 +1,21 @@
+<div class="container mt-5" *ngIf="recipe">
+    <h2>{{ recipe.title }}</h2>
+    <img
+      [src]="recipe.image"
+      alt="{{ recipe.title }}"
+      class="img-fluid mb-3"
+      style="max-width: 400px;"
+    />
+    <p><strong>Category:</strong> {{ recipe.category }}</p>
+    <p><strong>Area:</strong> {{ recipe.area }}</p>
+    <div *ngIf="recipe.tags?.length">
+      <strong>Tags:</strong>
+      <span *ngFor="let tag of recipe.tags">{{ tag }} </span>
+    </div>
+    <p class="mt-3">{{ recipe.instructions }}</p>
+    <div *ngIf="recipe.youtube">
+      <p><strong>Video:</strong></p>
+      <a [href]="recipe.youtube" target="_blank">{{ recipe.youtube }}</a>
+    </div>
+  </div>
+  
