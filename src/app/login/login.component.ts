@@ -1,24 +1,36 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   username = '';
   password = '';
-  constructor(private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {}
   onSubmit(form: any): void {
-    alert(`Welcome, ${this.username}!`);
-  }
-  goToSignup(): void {
-    this.router.navigate(['/signup']);
+    if (form.valid) {
+      this.http.post<any>('http://localhost:5000/api/login', { username: this.username, password: this.password })
+        .subscribe({
+          next: data => {
+            if (data.success) {
+              alert(data.message);
+              this.router.navigate(['/dashboard']);
+            } else {
+              alert(data.message);
+            }
+          },
+          error: (err) => {
+            alert(err.error?.message || 'Login failed');
+          }
+        });
+    }
   }
 }
