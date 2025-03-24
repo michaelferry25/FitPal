@@ -9,19 +9,91 @@ const User = require('./models/user.js');
 app.use(express.json());
 app.use(cors());
 
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
+const uri = 'mongodb://localhost:27017/fitpal';
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected"))
   .catch(err => {
     console.error("MongoDB connection error:", err);
     process.exit(1);
   });
 
-app.get('/', (req, res) => {
-  res.send('API is running');
+app.post('/api/signup', async (req, res) => {
+  try {
+    const {
+      firstname,
+      surname,
+      dateOfBirth,
+      address,
+      email,
+      password,
+      acceptedTerms
+    } = req.body;
+
+    if (!firstname || !surname || !dateOfBirth || !address || !email || !password) {
+      return res.status(400).json({ success: false, message: "Missing required fields" });
+    }
+
+    if (!acceptedTerms) {
+      return res.status(400).json({ success: false, message: "You must accept the Terms & Conditions" });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: "User already exists" });
+    }
+
+    const user = new User({
+      firstname,
+      surname,
+      dateOfBirth,
+      address,
+      email,
+      password,
+      acceptedTerms
+    });
+    await user.save();
+
+    return res.status(201).json({
+      success: true,
+      message: "Account created successfully",
+      user: { firstname, surname, email }
+    });
+  } catch (err) {
+    console.error("Signup error:", err);
+    return res.status(500).json({ success: false, message: err.message });
+  }
 });
 
+app.post('/api/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: "Missing required fields" });
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ success: false, message: "Invalid credentials" });
+    }
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      return res.status(400).json({ success: false, message: "Invalid credentials" });
+    }
+    return res.json({
+      success: true,
+      message: "Logged in successfully",
+      user: {
+        firstname: user.firstname,
+        surname: user.surname,
+        email: user.email
+      }
+    });
+  } catch (err) {
+    console.error("Login error:", err);
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
 
 app.get('/api/recipes', async (req, res) => {
   const { category } = req.query;

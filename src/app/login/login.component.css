@@ -1,0 +1,13 @@
+.card {
+    border: none;
+    border-radius: 10px;
+  }
+  
+  .card-body {
+    background: #fefefe;
+  }
+  
+  label {
+    font-weight: 500;
+  }
+  

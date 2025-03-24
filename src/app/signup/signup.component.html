@@ -1,54 +1,124 @@
-<div class="container mt-5">
-  <h2>Sign Up</h2>
-  <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)">
-    <div class="mb-3">
-      <label for="username" class="form-label">Username</label>
-      <input 
-        type="text" 
-        id="username" 
-        class="form-control" 
-        placeholder="Choose a username" 
-        [(ngModel)]="username" 
-        name="username" 
-        required
-      />
-      <div *ngIf="signupForm.submitted && !username" class="text-danger">
-        Username is required!
+<div class="container mt-5" style="max-width: 500px;">
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+      <h2 class="text-center mb-4">Create An Account</h2>
+      <p class="text-center text-muted">Register with your details below</p>
+
+      <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)">
+        <div class="mb-3">
+          <label for="firstname" class="form-label">Firstname</label>
+          <input
+            type="text"
+            id="firstname"
+            class="form-control"
+            [(ngModel)]="firstname"
+            name="firstname"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="surname" class="form-label">Surname</label>
+          <input
+            type="text"
+            id="surname"
+            class="form-control"
+            [(ngModel)]="surname"
+            name="surname"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="dateOfBirth" class="form-label">Date of Birth</label>
+          <input
+            type="date"
+            id="dateOfBirth"
+            class="form-control"
+            [(ngModel)]="dateOfBirth"
+            name="dateOfBirth"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">Address</label>
+          <input
+            type="text"
+            id="address"
+            class="form-control"
+            [(ngModel)]="address"
+            name="address"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            [(ngModel)]="email"
+            name="email"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="confirmEmail" class="form-label">Confirm Email</label>
+          <input
+            type="email"
+            id="confirmEmail"
+            class="form-control"
+            [(ngModel)]="confirmEmail"
+            name="confirmEmail"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            [(ngModel)]="password"
+            name="password"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            class="form-control"
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            required
+          />
+        </div>
+        <div class="form-check mb-3">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="terms"
+            [(ngModel)]="acceptedTerms"
+            name="acceptedTerms"
+          />
+          <label class="form-check-label" for="terms">
+            I have read and agree to <a href="#" target="_blank">Terms &amp; Conditions</a>.
+          </label>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100"
+          [disabled]="signupForm.invalid"
+        >
+          Create Account
+        </button>
+      </form>
+
+      <div class="text-center mt-3">
+        <span>Already Have An Account? </span>
+        <a routerLink="/login">Sign In</a>
       </div>
     </div>
-  
-    <div class="mb-3">
-      <label for="email" class="form-label">Email</label>
-      <input 
-        type="email" 
-        id="email" 
-        class="form-control" 
-        placeholder="Enter your email" 
-        [(ngModel)]="email" 
-        name="email" 
-        required
-      />
-      <div *ngIf="signupForm.submitted && !email" class="text-danger">
-        Email is required!
-      </div>
-    </div>
-  
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <input 
-        type="password" 
-        id="password" 
-        class="form-control" 
-        placeholder="Create a password" 
-        [(ngModel)]="password" 
-        name="password" 
-        required
-      />
-      <div *ngIf="signupForm.submitted && !password" class="text-danger">
-        Password is required!
-      </div>
-    </div>
-  
-    <button type="submit" class="btn btn-primary">Sign Up</button>
-  </form>
+  </div>
 </div>

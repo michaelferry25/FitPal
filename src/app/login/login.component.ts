@@ -12,25 +12,29 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username = '';
+  email = '';
   password = '';
+
   constructor(private http: HttpClient, private router: Router) {}
+
   onSubmit(form: any): void {
     if (form.valid) {
-      this.http.post<any>('http://localhost:5000/api/login', { username: this.username, password: this.password })
-        .subscribe({
-          next: data => {
-            if (data.success) {
-              alert(data.message);
-              this.router.navigate(['/dashboard']);
-            } else {
-              alert(data.message);
-            }
-          },
-          error: (err) => {
-            alert(err.error?.message || 'Login failed');
+      this.http.post<any>('http://localhost:5000/api/login', {
+        email: this.email,
+        password: this.password
+      }).subscribe({
+        next: data => {
+          if (data.success) {
+            alert(data.message);
+            this.router.navigate(['/dashboard']);
+          } else {
+            alert(data.message);
           }
-        });
+        },
+        error: err => {
+          alert(err.error?.message || 'Login failed');
+        }
+      });
     }
   }
 }
