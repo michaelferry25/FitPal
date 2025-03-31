@@ -5,6 +5,7 @@ const cors = require('cors');
 const fetch = require('node-fetch');
 const app = express();
 const User = require('./models/user.js');
+const Goal = require('./models/goal');
 
 app.use(express.json());
 app.use(cors());
@@ -158,6 +159,40 @@ app.get('/api/recipes/:id', async (req, res) => {
   } catch (err) {
     console.error("Recipe detail error:", err);
     res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.post('/api/goals', async (req, res) => {
+  try {
+    const { dailyCalories, proteins, carbs, fats, waterLitres } = req.body;
+
+    if (!dailyCalories || !proteins || !carbs || !fats || !waterLitres) {
+      return res.status(400).json({ success: false, message: 'All fields are required.' });
+    }
+
+    let goal = await Goal.findOne({});
+    if (goal) {
+      Object.assign(goal, { dailyCalories, proteins, carbs, fats, waterLitres });
+    } else {
+      goal = new Goal({ dailyCalories, proteins, carbs, fats, waterLitres });
+    }
+
+    await goal.save();
+    res.json({ success: true, goal });
+
+  } catch (err) {
+    console.error('Error setting goals:', err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+app.get('/api/goals', async (req, res) => {
+  try {
+    const goal = await Goal.findOne({});
+    res.json({ success: true, goal });
+  } catch (err) {
+    console.error('Error fetching goals:', err);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 });
 

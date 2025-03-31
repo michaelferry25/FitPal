@@ -7,6 +7,7 @@ import { AccountComponent } from './account/account.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RecipeComponent } from './recipe/recipe.component';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
+import { GoalsComponent } from './goals/goals.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -17,5 +18,6 @@ export const routes: Routes = [
   { path: 'account', component: AccountComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'recipes', component: RecipeComponent },
+  { path: 'goals', component: GoalsComponent },
   { path: 'recipes/:id', component: RecipeDetailsComponent }
 ];
