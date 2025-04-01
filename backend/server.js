@@ -6,6 +6,7 @@ const fetch = require('node-fetch');
 const app = express();
 const User = require('./models/user.js');
 const Goal = require('./models/goal');
+const Meal = require('./models/meal');
 
 app.use(express.json());
 app.use(cors());
@@ -193,6 +194,38 @@ app.get('/api/goals', async (req, res) => {
   } catch (err) {
     console.error('Error fetching goals:', err);
     res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// To log a users meals
+app.post('/api/meals', async (req, res) => {
+  try {
+    const { food, calories } = req.body;
+    if (!food || !calories) {
+      return res.status(400).json({ success: false, message: "Missing required fields" });
+    }
+    const meal = new Meal({ food, calories });
+    await meal.save();
+    return res.status(201).json({ success: true, message: "Meal logged successfully", meal });
+  } catch (err) {
+    console.error("Meal logging error:", err);
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// To retrieve today's meals by a user
+app.get('/api/meals', async (req, res) => {
+  try {
+    // Start and end of today
+    const start = new Date();
+    start.setHours(0,0,0,0);
+    const end = new Date();
+    end.setHours(23,59,59,999);
+    const meals = await Meal.find({ date: { $gte: start, $lte: end } });
+    return res.json({ success: true, meals });
+  } catch (err) {
+    console.error("Meal fetch error:", err);
+    return res.status(500).json({ success: false, message: err.message });
   }
 });
 

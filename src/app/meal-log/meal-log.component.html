@@ -1,0 +1,31 @@
+<div class="container mt-5">
+    <h2>Meal Log</h2>
+    <form #mealForm="ngForm" (ngSubmit)="addMeal(mealForm)">
+      <div class="mb-3">
+        <label for="food" class="form-label">Food Name</label>
+        <input type="text" id="food" class="form-control" [(ngModel)]="food" name="food" required>
+      </div>
+      <div class="mb-3">
+        <label for="calories" class="form-label">Calories</label>
+        <input type="number" id="calories" class="form-control" [(ngModel)]="calories" name="calories" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Log Meal</button>
+    </form>
+  
+    <hr>
+  
+    <h3>Today's Meals</h3>
+    <div *ngIf="meals && meals.length; else noMeals">
+      <div class="list-group">
+        <div *ngFor="let meal of meals" class="list-group-item">
+          <strong>{{ meal.food }}</strong> - {{ meal.calories }} kcal
+          <br>
+          <small>{{ meal.date | date:'shortTime' }}</small>
+        </div>
+      </div>
+    </div>
+    <ng-template #noMeals>
+      <p>No meals logged yet today.</p>
+    </ng-template>
+  </div>
+  
