@@ -1,10 +1,7 @@
 <div class="landing-container">
     <nav class="navbar">
-      <ul class="nav-links">
-        <li><a routerLink="/login">Login</a></li>
-        <li><a routerLink="/signup">Signup</a></li>
-      </ul>
     </nav>
+
     <section class="welcome-section">
       <h1>Welcome to FitPal</h1>
       <p>Your ultimate fitness companion</p>
@@ -13,5 +10,20 @@
         <button routerLink="/login">Sign In</button>
       </div>
     </section>
+
+      <div class="background-svg">
+        <svg width="100%" height="100%">
+          <defs>
+            <radialGradient id="grad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#00c6ff" />
+              <stop offset="100%" stop-color="#0072ff" />
+            </radialGradient>
+          </defs>
+          <circle cx="50%" cy="50%" r="200" fill="url(#grad)" opacity="0.4" />
+          <circle cx="30%" cy="70%" r="100" fill="url(#grad)" opacity="0.3" />
+          <circle cx="70%" cy="30%" r="150" fill="url(#grad)" opacity="0.2" />
+        </svg>
+      </div>
+    
   </div>
   
