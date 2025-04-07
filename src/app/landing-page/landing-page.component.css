@@ -26,38 +26,6 @@ body, html {
   100% { background-position: 0% 50%; }
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 3rem;
-  z-index: 2;
-}
-
-.logo {
-  font-size: 1.7rem;
-  font-weight: 700;
-  background: linear-gradient(90deg, #00c6ff, #0072ff);
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-}
-
-.nav-links li a {
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.3s;
-}
-
-.nav-links li a:hover {
-  color: #00f0ff;
-  transform: scale(1.05);
-}
-
 .welcome-section {
     flex: 1;
     display: flex;
@@ -112,3 +80,55 @@ body, html {
   inset: 0;
   z-index: 0;
 }
+
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .welcome-section h1,
+  .welcome-section p,
+  .actions {
+    animation: fadeInUp 0.9s ease forwards;
+    opacity: 0;
+  }
+  
+  .welcome-section h1 {
+    animation-delay: 0.2s;
+  }
+  
+  .welcome-section p {
+    animation-delay: 0.4s;
+  }
+  
+  .actions {
+    animation-delay: 0.6s;
+  }
+  
+  @media (max-width: 768px) {
+    
+    .welcome-section h1 {
+      font-size: 2.2rem;
+    }
+  
+    .welcome-section p {
+      font-size: 1rem;
+      max-width: 90%;
+    }
+  
+    .actions {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    .actions button {
+      width: 80%;
+      max-width: 300px;
+    }
+  }
