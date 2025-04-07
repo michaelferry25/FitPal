@@ -4,6 +4,7 @@ body, html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 .landing-container {
@@ -130,5 +131,84 @@ body, html {
     .actions button {
       width: 80%;
       max-width: 300px;
+    }
+  }
+
+  .features-section {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    padding: 4rem 2rem;
+    color: #ffffff;
+    gap: 2rem;
+  }
+  
+  .feature {
+    flex: 1 1 280px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 350px;
+  }
+  
+  .feature h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  
+  .feature p {
+    font-size: 1rem;
+    color: #cccccc;
+  }
+  
+  .feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+  }
+
+  .scroll-hint a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem auto 0;
+    animation: fadeInUp 1.2s ease forwards;
+    animation-delay: 0.8s;
+    opacity: 0;
+  }
+  .scroll-hint span {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 0.4rem;
+    text-align: center;
+  }
+  
+  .scroll-hint a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .arrow-down {
+    width: 24px;
+    height: 24px;
+    border-bottom: 2px solid #00c6ff;
+    border-right: 2px solid #00c6ff;
+    transform: rotate(45deg);
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0) rotate(45deg);
+    }
+    50% {
+      transform: translateY(6px) rotate(45deg);
     }
   }
