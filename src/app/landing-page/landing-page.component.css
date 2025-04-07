@@ -1,0 +1,73 @@
+.landing-container {
+    text-align: center;
+    height: 100vh;
+    background: linear-gradient(to bottom right, #000428, #004e92);
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+  }
+  
+  .logo {
+    font-weight: bold;
+    font-size: 1.8rem;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s;
+  }
+  
+  .nav-links a:hover {
+    color: #00c6ff;
+  }
+  
+  .welcome-section {
+    margin-top: 15vh;
+  }
+  
+  .welcome-section h1 {
+    font-size: 3rem;
+  }
+  
+  .welcome-section p {
+    font-size: 1.4rem;
+    margin-bottom: 30px;
+  }
+  
+  .actions button {
+    margin: 10px;
+    padding: 10px 25px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.3s, background-color 0.3s;
+  }
+  
+  .actions button:first-child {
+    background-color: #00c6ff;
+    color: #fff;
+  }
+  
+  .actions button:last-child {
+    background-color: transparent;
+    border: 2px solid #fff;
+    color: #fff;
+  }
+  
+  .actions button:hover {
+    transform: scale(1.1);
+  }
+  
