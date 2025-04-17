@@ -17,24 +17,17 @@ export class LoginComponent {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  onSubmit(form: any): void {
-    if (form.valid) {
-      this.http.post<any>('http://localhost:5000/api/login', {
-        email: this.email,
-        password: this.password
-      }).subscribe({
-        next: data => {
-          if (data.success) {
-            alert(data.message);
-            this.router.navigate(['/dashboard']);
-          } else {
-            alert(data.message);
-          }
-        },
-        error: err => {
-          alert(err.error?.message || 'Login failed');
-        }
-      });
+onSubmit() {
+  this.http.post<any>('http://localhost:5000/api/login', {
+    email: this.email,
+    password: this.password
+  }).subscribe(res => {
+    if(res.success){
+      localStorage.setItem('user', JSON.stringify(res.user));
+      this.router.navigate(['/home']);
+    } else {
+      alert('Login failed: ' + res.message);
     }
-  }
+  });
+}
 }

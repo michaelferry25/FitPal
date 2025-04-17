@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './auth.guard';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
@@ -14,14 +15,14 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'landing-page', component: LandingPageComponent },
-  { path: 'home', component: HomeComponent },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'account', component: AccountComponent },
-  { path: 'settings', component: SettingsComponent },
-  { path: 'recipes', component: RecipeComponent },
-  { path: 'goals', component: GoalsComponent },
-  { path: 'meal-log', component: MealLogComponent },
-  { path: 'recipes/:id', component: RecipeDetailsComponent }
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'recipes', component: RecipeComponent, canActivate: [AuthGuard] },
+  { path: 'goals', component: GoalsComponent, canActivate: [AuthGuard] },
+  { path: 'meal-log', component: MealLogComponent, canActivate: [AuthGuard] },
+  { path: 'recipes/:id', component: RecipeDetailsComponent, canActivate: [AuthGuard] }
 ];
