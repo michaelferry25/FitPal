@@ -12,6 +12,7 @@ import { MealLogComponent } from './meal-log/meal-log.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 
 export const routes: Routes = [
+  { path: '', component: LandingPageComponent },
   { path: 'landing-page', component: LandingPageComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
