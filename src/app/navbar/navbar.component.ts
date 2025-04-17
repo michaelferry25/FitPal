@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,9 +11,21 @@ import { CommonModule } from '@angular/common';
 })
 export class NavbarComponent implements OnInit {
   firstname = '';
+  isLoggedIn = false;
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    this.firstname = user.firstname || 'user';
+    if (user.firstname) {
+      this.firstname = user.firstname;
+      this.isLoggedIn = true;
+    }
+  }
+
+  logout(): void {
+    localStorage.removeItem('user');
+    this.isLoggedIn = false;
+    this.router.navigate(['/']);
   }
 }

@@ -2,6 +2,10 @@
   <div class="card shadow-sm">
     <div class="card-body p-4">
       <h2 class="text-center mb-4">Sign In</h2>
+      <div *ngIf="showAuthMessage" class="alert alert-info">
+        <strong>Hey there!</strong> We'd love to have you explore more, but you need to be signed in first.
+        Not registered yet? <a routerLink="/signup">Click here to join us!</a>
+      </div>      
       <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
