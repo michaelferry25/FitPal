@@ -1,0 +1,15 @@
+<div class="container mt-5 text-center">
+    <h2>Your Fitness Goal</h2>
+    <p class="text-muted">What would you like to achieve?</p>
+  
+    <div class="goal-options d-flex justify-content-center gap-4 mt-4 flex-wrap">
+      <button class="btn btn-danger" (click)="selectGoal('lose')">Lose Weight</button>
+      <button class="btn btn-secondary" (click)="selectGoal('maintain')">Maintain Weight</button>
+      <button class="btn btn-success" (click)="selectGoal('gain')">Gain Weight</button>
+    </div>
+  
+    <div class="mt-4" *ngIf="selectedGoal">
+      <h4>You selected: {{ selectedGoal | titlecase }} Weight</h4>
+    </div>
+  </div>
+  
