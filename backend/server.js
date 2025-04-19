@@ -233,12 +233,11 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-app.post('/api/saveGoals', async (req, res) => {
+app.post('/api/save-goals', async (req, res) => {
   const { email, gender, age, height, activityLevel, calorieGoal } = req.body;
 
   try {
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
@@ -250,10 +249,34 @@ app.post('/api/saveGoals', async (req, res) => {
     user.calorieGoal = calorieGoal;
 
     await user.save();
-
     res.json({ success: true, message: "User goals updated successfully" });
   } catch (err) {
     console.error("Error saving goals:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+app.post('/api/get-user-goals', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({
+      success: true,
+      user: {
+        gender: user.gender,
+        age: user.age,
+        height: user.height,
+        activityLevel: user.activityLevel,
+        calorieGoal: user.calorieGoal
+      }
+    });
+  } catch (err) {
+    console.error("Error retrieving user goals:", err);
     res.status(500).json({ success: false, message: "Server error" });
   }
 });

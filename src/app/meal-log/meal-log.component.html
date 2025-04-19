@@ -1,5 +1,9 @@
 <div class="container mt-5">
     <h2>Meal Log</h2>
+    <div *ngIf="noGoal" class="alert alert-warning text-center mt-4">
+      <p>You haven't set a goal yet. <a routerLink="/goals/progress">Click here to set one up</a>.</p>
+    </div>
+    
     <form #mealForm="ngForm" (ngSubmit)="addMeal(mealForm)">
       <div class="mb-3">
         <label for="food" class="form-label">Food Name</label>

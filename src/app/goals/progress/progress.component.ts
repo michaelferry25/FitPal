@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { HttpClientModule } from '@angular/common/http';
-
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-progress',
@@ -12,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
   templateUrl: './progress.component.html',
   styleUrls: ['./progress.component.css']
 })
-export class ProgressComponent {
+export class ProgressComponent implements OnInit {
   selectedGoal: 'lose' | 'maintain' | 'gain' | null = null;
   difficulty = '';
   difficultyOptions: { label: string; value: string; info: string }[] = [];
@@ -29,7 +28,22 @@ export class ProgressComponent {
   maintenanceCalories: number | null = null;
   recommendedCalories: number | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
+
+  ngOnInit(): void {
+    const email = JSON.parse(localStorage.getItem('user') || '{}').email;
+
+    this.http.post<any>('http://localhost:5000/api/get-user-goals', { email }).subscribe(res => {
+      if (res.success && res.user) {
+        const user = res.user;
+        this.gender = user.gender || '';
+        this.age = user.age || null;
+        this.height = user.height || null;
+        this.activityLevel = user.activityLevel || '';
+        this.recommendedCalories = user.calorieGoal || null;
+      }
+    });
+  }
 
   selectGoal(goal: 'lose' | 'maintain' | 'gain') {
     this.selectedGoal = goal;
@@ -125,5 +139,9 @@ export class ProgressComponent {
     }).subscribe(res => {
       console.log('Goal data saved:', res);
     });
+  }
+
+  startLogging(): void {
+    this.router.navigate(['/meal-log']);
   }
 }

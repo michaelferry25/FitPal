@@ -16,10 +16,28 @@ export class MealLogComponent implements OnInit {
   calories!: number;
   meals: any[] = [];
 
+  calorieGoal: number | null = null;
+  noGoal = false;
+
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.loadMeals();
+    const email = JSON.parse(localStorage.getItem('user') || '{}').email;
+
+    this.http.post('http://localhost:5000/api/get-user-goals', { email }).subscribe(
+      (res: any) => {
+        if (res.success && res.user.calorieGoal) {
+          this.calorieGoal = res.user.calorieGoal;
+          this.loadMeals();
+        } else {
+          this.noGoal = true;
+        }
+      },
+      err => {
+        console.error(err);
+        this.noGoal = true;
+      }
+    );
   }
 
   addMeal(form: any): void {
