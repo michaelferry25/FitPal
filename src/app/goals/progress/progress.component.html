@@ -35,6 +35,44 @@
   
       <div *ngIf="estimatedWeeks !== null" class="alert alert-info mt-4 w-50 mx-auto">
         <strong>Estimated time:</strong> {{ estimatedWeeks }} week{{ estimatedWeeks === 1 ? '' : 's' }} to reach your goal.
+        <hr class="my-4">
+
+<h5>Tell us more to calculate your ideal daily calories:</h5>
+
+<div class="row justify-content-center mt-3">
+  <div class="col-md-2">
+    <label>Gender</label>
+    <select class="form-select" [(ngModel)]="gender" (change)="calculateCalories()">
+      <option value="" disabled selected>Select</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <label>Age</label>
+    <input type="number" class="form-control" [(ngModel)]="age" (input)="calculateCalories()">
+  </div>
+  <div class="col-md-2">
+    <label>Height (cm)</label>
+    <input type="number" class="form-control" [(ngModel)]="height" (input)="calculateCalories()">
+  </div>
+  <div class="col-md-3">
+    <label>Activity Level</label>
+    <select class="form-select" [(ngModel)]="activityLevel" (change)="calculateCalories()">
+      <option value="" disabled selected>Select</option>
+      <option value="sedentary">Sedentary (little to no exercise)</option>
+      <option value="light">Lightly Active (1-3 days/week)</option>
+      <option value="moderate">Moderately Active (3-5 days/week)</option>
+      <option value="active">Very Active (6-7 days/week)</option>
+    </select>
+  </div>
+</div>
+
+<div class="mt-4" *ngIf="maintenanceCalories && recommendedCalories">
+  <p class="mb-1"><strong>Maintenance Calories:</strong> {{ maintenanceCalories }} kcal/day</p>
+  <p class="mb-1"><strong>Recommended Calories:</strong> {{ recommendedCalories }} kcal/day (based on your goal)</p>
+</div>
+
       </div>
     </div>
   </div>

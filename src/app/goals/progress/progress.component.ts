@@ -18,12 +18,22 @@ export class ProgressComponent {
   goalWeight: number | null = null;
   estimatedWeeks: number | null = null;
 
+  gender: 'male' | 'female' | '' = '';
+  age: number | null = null;
+  height: number | null = null;
+  activityLevel: string = '';
+
+  maintenanceCalories: number | null = null;
+  recommendedCalories: number | null = null;
+
   selectGoal(goal: 'lose' | 'maintain' | 'gain') {
     this.selectedGoal = goal;
     this.difficulty = '';
     this.currentWeight = null;
     this.goalWeight = null;
     this.estimatedWeeks = null;
+    this.maintenanceCalories = null;
+    this.recommendedCalories = null;
 
     if (goal === 'lose') {
       this.difficultyOptions = [
@@ -65,5 +75,37 @@ export class ProgressComponent {
     } else {
       this.estimatedWeeks = null;
     }
+  }
+
+  calculateCalories(): void {
+    if (!this.gender || !this.age || !this.height || !this.currentWeight || !this.activityLevel) return;
+
+    const weight = this.currentWeight;
+    const height = this.height;
+    const age = this.age;
+
+    let bmr = 0;
+
+    if (this.gender === 'male') {
+      bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+    } else {
+      bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+    }
+
+    const activityFactors: { [key: string]: number } = {
+      sedentary: 1.2,
+      light: 1.375,
+      moderate: 1.55,
+      active: 1.725
+    };
+
+    const multiplier = activityFactors[this.activityLevel];
+    const tdee = bmr * multiplier;
+
+    this.maintenanceCalories = Math.round(tdee);
+
+    const goal = this.selectedGoal;
+    const diff = goal === 'lose' ? -0.2 : goal === 'gain' ? 0.15 : 0;
+    this.recommendedCalories = Math.round(tdee * (1 + diff));
   }
 }
