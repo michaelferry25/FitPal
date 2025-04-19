@@ -1,35 +1,114 @@
 <div class="container mt-5">
-    <h2>Meal Log</h2>
-    <div *ngIf="noGoal" class="alert alert-warning text-center mt-4">
-      <p>You haven't set a goal yet. <a routerLink="/goals/progress">Click here to set one up</a>.</p>
+  <h2 class="text-center mb-4">Meal Log</h2>
+
+  <div *ngIf="calorieGoal">
+    <h4 class="text-center">Daily Goal: {{ calorieGoal }} kcal</h4>
+
+    <label class="fw-bold">Calories Consumed</label>
+    <div class="progress mb-3" style="height: 24px;">
+      <div
+        class="progress-bar"
+        [class.bg-danger]="totals.calories > calorieGoal"
+        [style.width]="getMacroBarWidth(totals.calories, calorieGoal)"
+      >
+        {{ totals.calories }} / {{ calorieGoal }} kcal
+      </div>
     </div>
-    
-    <form #mealForm="ngForm" (ngSubmit)="addMeal(mealForm)">
-      <div class="mb-3">
-        <label for="food" class="form-label">Food Name</label>
-        <input type="text" id="food" class="form-control" [(ngModel)]="food" name="food" required>
-      </div>
-      <div class="mb-3">
-        <label for="calories" class="form-label">Calories</label>
-        <input type="number" id="calories" class="form-control" [(ngModel)]="calories" name="calories" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Log Meal</button>
-    </form>
-  
-    <hr>
-  
-    <h3>Today's Meals</h3>
-    <div *ngIf="meals && meals.length; else noMeals">
-      <div class="list-group">
-        <div *ngFor="let meal of meals" class="list-group-item">
-          <strong>{{ meal.food }}</strong> - {{ meal.calories }} kcal
-          <br>
-          <small>{{ meal.date | date:'shortTime' }}</small>
+
+    <div class="mb-4">
+      <div *ngFor="let macro of ['carbs', 'protein', 'fats']" class="mb-3">
+        <label class="fw-bold text-capitalize">
+          {{ macro }}: {{ totals[macro] }}g /
+          {{
+            macro === 'carbs' || macro === 'protein'
+              ? Math.round((calorieGoal! * 0.25) / 4)
+              : Math.round((calorieGoal! * 0.25) / 9)
+          }}g
+        </label>
+        <div class="progress" style="height: 16px;">
+          <div
+            class="progress-bar"
+            [ngClass]="getMacroBarClass(totals[macro], macro === 'carbs' || macro === 'protein'
+              ? Math.round((calorieGoal! * 0.25) / 4)
+              : Math.round((calorieGoal! * 0.25) / 9))"
+            [style.width]="getMacroBarWidth(totals[macro], macro === 'carbs' || macro === 'protein'
+              ? Math.round((calorieGoal! * 0.25) / 4)
+              : Math.round((calorieGoal! * 0.25) / 9))"
+          ></div>
         </div>
       </div>
     </div>
-    <ng-template #noMeals>
-      <p>No meals logged yet today.</p>
-    </ng-template>
+
+    <form (ngSubmit)="logMeal()" class="card p-4 shadow-sm">
+      <h5 class="mb-3">Log a New Meal</h5>
+
+      <div class="mb-3">
+        <label>Food Name</label>
+        <input [(ngModel)]="food" name="food" class="form-control" required />
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Category</label>
+          <select [(ngModel)]="category" name="category" class="form-select">
+            <option>Breakfast</option>
+            <option>Lunch</option>
+            <option>Dinner</option>
+            <option>Snacks</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Quantity</label>
+          <input type="number" [(ngModel)]="quantity" name="quantity" class="form-control" />
+        </div>
+        <div class="col">
+          <label>Unit</label>
+          <select [(ngModel)]="unit" name="unit" class="form-select">
+            <option>g</option>
+            <option>oz</option>
+            <option>ml</option>
+            <option>cup</option>
+            <option>slice</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col">
+          <label>Calories</label>
+          <input type="number" [(ngModel)]="calories" name="calories" class="form-control" required />
+        </div>
+        <div class="col">
+          <label>Carbs (g)</label>
+          <input type="number" [(ngModel)]="carbs" name="carbs" class="form-control" />
+        </div>
+        <div class="col">
+          <label>Protein (g)</label>
+          <input type="number" [(ngModel)]="protein" name="protein" class="form-control" />
+        </div>
+        <div class="col">
+          <label>Fats (g)</label>
+          <input type="number" [(ngModel)]="fats" name="fats" class="form-control" />
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-4 w-100">Add Meal</button>
+    </form>
+
+    <hr class="my-4" />
+
+    <h4>Today's Meals</h4>
+    <div *ngIf="meals.length === 0" class="text-muted">No meals logged yet today.</div>
+    <ul class="list-group" *ngIf="meals.length > 0">
+      <li class="list-group-item" *ngFor="let meal of meals">
+        <strong>{{ meal.food }}</strong> - {{ meal.calories }} kcal |
+        {{ meal.carbs || 0 }}g C / {{ meal.protein || 0 }}g P / {{ meal.fats || 0 }}g F
+        <span class="text-muted float-end">{{ meal.category }}</span>
+      </li>
+    </ul>
   </div>
-  
+
+  <div *ngIf="noGoal" class="alert alert-warning text-center mt-5">
+    You haven't set a goal yet. <a routerLink="/goals/progress">Click here to set your goals</a>.
+  </div>
+</div>

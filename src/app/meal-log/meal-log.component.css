@@ -1,4 +1,17 @@
-.list-group-item {
-    margin-bottom: 8px;
+.progress-bar.overflow {
+  background-color: #dc3545 !important;
+  animation: pulseOver 1s infinite alternate;
+}
+
+@keyframes pulseOver {
+  from {
+    transform: scaleX(1);
   }
-  
+  to {
+    transform: scaleX(1.05);
+  }
+}
+
+label {
+  font-size: 14px;
+}

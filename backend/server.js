@@ -200,34 +200,54 @@ app.get('/api/goals', async (req, res) => {
 // To log a users meals
 app.post('/api/meals', async (req, res) => {
   try {
-    const { food, calories } = req.body;
-    if (!food || !calories) {
+    const { email, food, category, quantity, unit, calories, carbs, protein, fats } = req.body;
+
+    if (!email || !food || !calories) {
       return res.status(400).json({ success: false, message: "Missing required fields" });
     }
-    const meal = new Meal({ food, calories });
+
+    const meal = new Meal({
+      email,
+      food,
+      category,
+      quantity,
+      unit,
+      calories,
+      carbs,
+      protein,
+      fats,
+      date: new Date().toISOString().split('T')[0]
+    });
+
     await meal.save();
-    return res.status(201).json({ success: true, message: "Meal logged successfully", meal });
+    return res.status(201).json({ success: true, message: "Meal saved successfully" });
+
   } catch (err) {
-    console.error("Meal logging error:", err);
-    return res.status(500).json({ success: false, message: err.message });
+    console.error("Meal saving error:", err);
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
-// To retrieve today's meals by a user
-app.get('/api/meals', async (req, res) => {
+// Get today's meals for a user
+app.post('/api/get-meals', async (req, res) => {
   try {
-    // Start and end of today
-    const start = new Date();
-    start.setHours(0,0,0,0);
-    const end = new Date();
-    end.setHours(23,59,59,999);
-    const meals = await Meal.find({ date: { $gte: start, $lte: end } });
-    return res.json({ success: true, meals });
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ success: false, message: "Email required" });
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+
+    const meals = await Meal.find({ email, date: today });
+
+    res.json({ success: true, meals });
   } catch (err) {
     console.error("Meal fetch error:", err);
-    return res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
