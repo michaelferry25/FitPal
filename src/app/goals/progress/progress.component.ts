@@ -14,9 +14,16 @@ export class ProgressComponent {
   difficulty = '';
   difficultyOptions: { label: string; value: string; info: string }[] = [];
 
+  currentWeight: number | null = null;
+  goalWeight: number | null = null;
+  estimatedWeeks: number | null = null;
+
   selectGoal(goal: 'lose' | 'maintain' | 'gain') {
     this.selectedGoal = goal;
     this.difficulty = '';
+    this.currentWeight = null;
+    this.goalWeight = null;
+    this.estimatedWeeks = null;
 
     if (goal === 'lose') {
       this.difficultyOptions = [
@@ -40,5 +47,23 @@ export class ProgressComponent {
   get selectedDifficultyInfo(): string {
     const match = this.difficultyOptions.find(opt => opt.value === this.difficulty);
     return match ? match.info : '';
+  }
+
+  calculateTime(): void {
+    if (
+      this.currentWeight !== null &&
+      this.goalWeight !== null &&
+      this.difficulty !== ''
+    ) {
+      const rate = parseFloat(this.difficulty);
+      if (rate === 0) {
+        this.estimatedWeeks = 0;
+      } else {
+        const diff = Math.abs(this.goalWeight - this.currentWeight);
+        this.estimatedWeeks = Math.ceil(diff / rate);
+      }
+    } else {
+      this.estimatedWeeks = null;
+    }
   }
 }
