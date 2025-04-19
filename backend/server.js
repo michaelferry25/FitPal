@@ -232,3 +232,28 @@ app.get('/api/meals', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+app.post('/api/saveGoals', async (req, res) => {
+  const { email, gender, age, height, activityLevel, calorieGoal } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    user.gender = gender;
+    user.age = age;
+    user.height = height;
+    user.activityLevel = activityLevel;
+    user.calorieGoal = calorieGoal;
+
+    await user.save();
+
+    res.json({ success: true, message: "User goals updated successfully" });
+  } catch (err) {
+    console.error("Error saving goals:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});

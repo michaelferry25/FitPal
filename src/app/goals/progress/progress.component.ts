@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-progress',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './progress.component.html',
   styleUrls: ['./progress.component.css']
 })
@@ -25,6 +28,8 @@ export class ProgressComponent {
 
   maintenanceCalories: number | null = null;
   recommendedCalories: number | null = null;
+
+  constructor(private http: HttpClient) {}
 
   selectGoal(goal: 'lose' | 'maintain' | 'gain') {
     this.selectedGoal = goal;
@@ -107,5 +112,18 @@ export class ProgressComponent {
     const goal = this.selectedGoal;
     const diff = goal === 'lose' ? -0.2 : goal === 'gain' ? 0.15 : 0;
     this.recommendedCalories = Math.round(tdee * (1 + diff));
+
+    const email = JSON.parse(localStorage.getItem('user') || '{}').email;
+
+    this.http.post('http://localhost:5000/api/save-goals', {
+      email,
+      gender: this.gender,
+      age: this.age,
+      height: this.height,
+      activityLevel: this.activityLevel,
+      calorieGoal: this.recommendedCalories
+    }).subscribe(res => {
+      console.log('Goal data saved:', res);
+    });
   }
 }
