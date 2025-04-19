@@ -10,6 +10,17 @@
   
     <div class="mt-4" *ngIf="selectedGoal">
       <h4>You selected: {{ selectedGoal | titlecase }} Weight</h4>
+  
+      <label for="difficulty" class="form-label mt-3">Choose your pace:</label>
+      <select id="difficulty" class="form-select w-auto mx-auto" [(ngModel)]="difficulty">
+        <option *ngFor="let opt of difficultyOptions" [value]="opt.value">
+          {{ opt.label }}
+        </option>
+      </select>
+  
+      <div class="mt-2" *ngIf="difficulty">
+        <p class="text-muted">{{ selectedDifficultyInfo }}</p>
+      </div>
     </div>
   </div>
   
