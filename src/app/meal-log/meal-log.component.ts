@@ -118,4 +118,18 @@ export class MealLogComponent implements OnInit {
     this.carbs = 0;
     this.fats = 0;
   }
+
+  get remaining(): Record<'calories' | 'carbs' | 'protein' | 'fats', number> {
+    return {
+      calories: (this.calorieGoal || 0) - this.totals.calories,
+      carbs: Math.round(((this.calorieGoal || 0) * 0.25) / 4) - this.totals.carbs,
+      protein: Math.round(((this.calorieGoal || 0) * 0.25) / 4) - this.totals.protein,
+      fats: Math.round(((this.calorieGoal || 0) * 0.25) / 9) - this.totals.fats
+    };
+  }
+  macroKeys: Array<'carbs' | 'protein' | 'fats'> = ['carbs', 'protein', 'fats'];
+  getRemaining(macro: 'carbs' | 'protein' | 'fats'): number {
+    const value = this.remaining[macro];
+    return value < 0 ? 0 : value;
+  }
 }

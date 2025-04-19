@@ -14,9 +14,13 @@
         {{ totals.calories }} / {{ calorieGoal }} kcal
       </div>
     </div>
+    <div class="text-muted text-center mb-4">
+      Calories Remaining: {{ remaining.calories < 0 ? 0 : remaining.calories }} kcal
+    </div>
+    
 
     <div class="mb-4">
-      <div *ngFor="let macro of ['carbs', 'protein', 'fats']" class="mb-3">
+      <div *ngFor="let macro of macroKeys" class="mb-3">
         <label class="fw-bold text-capitalize">
           {{ macro }}: {{ totals[macro] }}g /
           {{
@@ -36,6 +40,9 @@
               : Math.round((calorieGoal! * 0.25) / 9))"
           ></div>
         </div>
+        <div class="text-muted small">
+          Remaining: {{ getRemaining(macro) }}g
+        </div>           
       </div>
     </div>
 
