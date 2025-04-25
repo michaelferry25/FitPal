@@ -7,6 +7,7 @@ const app = express();
 const User = require('./models/user.js');
 const Goal = require('./models/goal');
 const Meal = require('./models/meal');
+const Weight = require('./models/weight');
 
 app.use(express.json());
 app.use(cors());
@@ -298,5 +299,48 @@ app.post('/api/get-user-goals', async (req, res) => {
   } catch (err) {
     console.error("Error retrieving user goals:", err);
     res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+// Log user's daily weight
+app.post('/api/log-weight', async (req, res) => {
+  const { email, weight } = req.body;
+
+  if (!email || !weight) {
+    return res.status(400).json({ success: false, message: 'Missing required fields.' });
+  }
+
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    
+    let weightLog = await Weight.findOne({ email, date: today });
+    if (weightLog) {
+      weightLog.weight = weight;
+    } else {
+      weightLog = new Weight({ email, weight, date: today });
+    }
+
+    await weightLog.save();
+    res.json({ success: true, message: 'Weight logged successfully.' });
+  } catch (err) {
+    console.error('Error logging weight:', err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Get a user's logged weights sorted by date added
+app.post('/api/get-weight-log', async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ success: false, message: 'Email required.' });
+  }
+
+  try {
+    const weights = await Weight.find({ email }).sort({ date: 1 });
+    res.json({ success: true, weights });
+  } catch (err) {
+    console.error('Error retrieving weights:', err);
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 });
