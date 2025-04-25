@@ -12,6 +12,7 @@ import { GoalsComponent } from './goals/goals.component';
 import { MealLogComponent } from './meal-log/meal-log.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ProgressComponent } from './goals/progress/progress.component';
+import { WeightLogComponent } from './goals/weight-log/weight-log.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -26,5 +27,6 @@ export const routes: Routes = [
   { path: 'goals', component: GoalsComponent, canActivate: [AuthGuard] },
   { path: 'goals/progress', component: ProgressComponent, canActivate: [AuthGuard] },
   { path: 'meal-log', component: MealLogComponent, canActivate: [AuthGuard] },
-  { path: 'recipes/:id', component: RecipeDetailsComponent, canActivate: [AuthGuard] }
+  { path: 'recipes/:id', component: RecipeDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'goals/weight-log', component: WeightLogComponent, canActivate: [AuthGuard] }
 ];

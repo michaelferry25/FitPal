@@ -1,0 +1,25 @@
+<div class="container py-4">
+    <h2 class="mb-3">Log Today's Weight</h2>
+  
+    <div class="mb-3">
+      <label class="form-label">Today's Weight (kg)</label>
+      <input type="number" class="form-control" [(ngModel)]="weight" placeholder="Enter weight">
+    </div>
+  
+    <button class="btn btn-primary" (click)="logWeight()">Log Weight</button>
+  
+    <hr class="my-4">
+  
+    <h4 class="mb-3">Weight Progress</h4>
+    <canvas id="weightChart"></canvas>
+  
+    <hr class="my-4">
+    
+    <h5>Weight Log History</h5>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let entry of weightLogs">
+        {{ entry.date }}: {{ entry.weight }} kg
+      </li>
+    </ul>
+  </div>
+  
