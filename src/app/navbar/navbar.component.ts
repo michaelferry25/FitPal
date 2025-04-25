@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Router, Event, NavigationEnd } from '@angular/router'; // Import Event and NavigationEnd
 
 @Component({
   selector: 'app-navbar',
@@ -10,22 +10,29 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  firstname = '';
-  isLoggedIn = false;
+  user: any = null;
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (user.firstname) {
-      this.firstname = user.firstname;
-      this.isLoggedIn = true;
-    }
+    this.loadUser();
+    window.addEventListener('storage', () => this.loadUser());
+
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd) {
+        this.loadUser();
+      }
+    });
   }
 
-  logout(): void {
+  loadUser() {
+    const stored = localStorage.getItem('user');
+    this.user = stored ? JSON.parse(stored) : null;
+  }
+
+  logout() {
     localStorage.removeItem('user');
-    this.isLoggedIn = false;
-    this.router.navigate(['/']);
+    this.user = null;
+    this.router.navigate(['/login']);
   }
 }
