@@ -1,1 +1,15 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  router-outlet + * {
+    flex: 1;
+    padding: 1rem;
+  }
+  
+  app-footer {
+    margin-top: auto; /* Pushes footer to bottom */
+  }
