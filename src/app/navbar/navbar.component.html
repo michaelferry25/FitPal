@@ -4,7 +4,7 @@
     <div>
       <ng-container *ngIf="user; else loginTemplate">
         <span class="me-3">Hi {{ user.firstname }}</span>
-        <a class="text-white text-decoration-none me-3" routerLink="/help">Help</a>
+        <a class="text-white text-decoration-none me-3" routerLink="./info/contact">Help</a>
         <a class="text-white text-decoration-none me-3" routerLink="/settings">Settings</a>
         <button class="btn btn-sm btn-outline-light" (click)="logout()">Logout</button>
       </ng-container>
