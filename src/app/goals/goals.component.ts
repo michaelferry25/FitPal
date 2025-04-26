@@ -21,6 +21,8 @@ export class GoalsComponent implements OnInit {
   };
   currentGoal: any = null;
 
+  isEditing = false;
+
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -31,6 +33,7 @@ export class GoalsComponent implements OnInit {
     this.http.post<any>('http://localhost:5000/api/goals', this.goals).subscribe({
       next: res => {
         this.currentGoal = res.goal;
+        this.isEditing = false;
         alert('Goals successfully saved!');
       },
       error: err => {
@@ -44,6 +47,15 @@ export class GoalsComponent implements OnInit {
     this.http.get<any>('http://localhost:5000/api/goals').subscribe({
       next: res => {
         this.currentGoal = res.goal;
+        if (this.currentGoal) {
+          this.goals = { 
+            dailyCalories: this.currentGoal.dailyCalories,
+            proteins: this.currentGoal.proteins,
+            carbs: this.currentGoal.carbs,
+            fats: this.currentGoal.fats,
+            waterLitres: this.currentGoal.waterLitres
+          };
+        }
       },
       error: err => {
         console.error('Error loading goals:', err);
@@ -59,5 +71,9 @@ export class GoalsComponent implements OnInit {
       fats: 70,
       waterLitres: 2.0
     };
+  }
+
+  startEditing(): void {
+    this.isEditing = true;
   }
 }

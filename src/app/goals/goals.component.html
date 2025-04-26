@@ -1,50 +1,59 @@
 <div class="container my-4">
-    <h2>Nutrition Goals</h2>
-    <form #goalForm="ngForm" (ngSubmit)="saveGoals()">
-      <div class="row g-3">
-        <div class="col-md-4">
-          <label for="dailyCalories" class="form-label">Calories (kcal)</label>
-          <input type="number" class="form-control" id="dailyCalories" [(ngModel)]="goals.dailyCalories" name="dailyCalories" required>
-        </div>
-        <div class="col-md-4">
-          <label for="proteins" class="form-label">Proteins (g)</label>
-          <input type="number" class="form-control" id="proteins" [(ngModel)]="goals.proteins" name="proteins" required>
-        </div>
-        <div class="col-md-4">
-          <label for="carbs" class="form-label">Carbs (g)</label>
-          <input type="number" class="form-control" id="carbs" [(ngModel)]="goals.carbs" name="carbs" required>
-        </div>
-        <div class="col-md-4">
-          <label for="fats" class="form-label">Fats (g)</label>
-          <input type="number" class="form-control" id="fats" [(ngModel)]="goals.fats" name="fats" required>
-        </div>
-        <div class="col-md-4">
-          <label for="waterLitres" class="form-label">Water Intake (Litres)</label>
-          <input type="number" step="0.1" class="form-control" id="waterLitres" [(ngModel)]="goals.waterLitres" name="waterLitres" required>
-        </div>
-      </div>
-      <button class="btn btn-success my-4" type="submit">Save Goals</button>
-      <button class="btn btn-secondary ms-2" type="button" (click)="resetGoals()">Reset Goals</button>
-      <div class="text-center mt-4">
-        <button class="btn btn-outline-primary" routerLink="/goals/progress">
-          Track Your Weight Progress
-        </button>
-      </div>
-      
-    </form>
-  
-    <hr>
-  
-    <h3>Your Current Goals</h3>
-    <div *ngIf="currentGoal; else noGoalsSet">
+  <h2>Nutrition Goals</h2>
+  <hr>
+
+  <div *ngIf="currentGoal; else noGoalsSet">
+
+    <div *ngIf="!isEditing; else editForm">
       <p>Calories: {{ currentGoal.dailyCalories }} kcal</p>
       <p>Proteins: {{ currentGoal.proteins }} g</p>
       <p>Carbs: {{ currentGoal.carbs }} g</p>
       <p>Fats: {{ currentGoal.fats }} g</p>
       <p>Water Intake: {{ currentGoal.waterLitres }} Litres</p>
+
+      <button class="btn btn-outline-primary" (click)="startEditing()">Edit Goals</button>
     </div>
-    <ng-template #noGoalsSet>
-      <div class="alert alert-warning">No goals set yet.</div>
+
+    <ng-template #editForm>
+      <form (ngSubmit)="saveGoals()" #goalForm="ngForm" class="card p-4">
+        <h4>Edit Your Goals</h4>
+
+        <div class="mb-3">
+          <label for="dailyCalories" class="form-label">Daily Calories (kcal)</label>
+          <input id="dailyCalories" type="number" class="form-control" [(ngModel)]="goals.dailyCalories" name="dailyCalories" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="proteins" class="form-label">Proteins (g)</label>
+          <input id="proteins" type="number" class="form-control" [(ngModel)]="goals.proteins" name="proteins" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="carbs" class="form-label">Carbs (g)</label>
+          <input id="carbs" type="number" class="form-control" [(ngModel)]="goals.carbs" name="carbs" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="fats" class="form-label">Fats (g)</label>
+          <input id="fats" type="number" class="form-control" [(ngModel)]="goals.fats" name="fats" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="waterLitres" class="form-label">Water Intake (Litres)</label>
+          <input id="waterLitres" type="number" step="0.1" class="form-control" [(ngModel)]="goals.waterLitres" name="waterLitres" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+      </form>
     </ng-template>
+
   </div>
-  
+
+  <button class="btn btn-outline-primary mt-3" routerLink="/goals/progress">
+    Create a New Goal
+  </button>
+
+  <ng-template #noGoalsSet>
+    <div class="alert alert-warning mt-4">No goals set yet.</div>
+  </ng-template>
+</div>

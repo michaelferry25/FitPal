@@ -1,25 +1,58 @@
-<div class="container py-4">
-    <h2 class="mb-3">Log Today's Weight</h2>
-  
-    <div class="mb-3">
-      <label class="form-label">Today's Weight (kg)</label>
-      <input type="number" class="form-control" [(ngModel)]="weight" placeholder="Enter weight">
+<div class="container my-4">
+  <h2 class="mb-4 text-center">Track Your Weight</h2>
+
+  <!-- Chart -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <canvas id="weightChart" width="400" height="200"></canvas>
     </div>
-  
-    <button class="btn btn-primary" (click)="logWeight()">Log Weight</button>
-  
-    <hr class="my-4">
-  
-    <h4 class="mb-3">Weight Progress</h4>
-    <canvas id="weightChart"></canvas>
-  
-    <hr class="my-4">
-    
-    <h5>Weight Log History</h5>
-    <ul class="list-group">
-      <li class="list-group-item" *ngFor="let entry of weightLogs">
-        {{ entry.date }}: {{ entry.weight }} kg
-      </li>
-    </ul>
   </div>
-  
+
+  <!-- Add/Edit Form -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5>{{ editingEntry ? 'Edit Weight Entry' : 'Add New Weight' }}</h5>
+
+      <div class="row g-3 align-items-center mt-2">
+        <div class="col-md-4">
+          <input type="date" [(ngModel)]="selectedDate" class="form-control" [max]="maxDate">
+        </div>
+        <div class="col-md-4">
+          <input type="number" [(ngModel)]="weight" step="0.1" placeholder="Weight (kg)" class="form-control">
+        </div>
+        <div class="col-md-4">
+          <button *ngIf="!editingEntry" class="btn btn-primary" (click)="addWeight()" [disabled]="!selectedDate || weight === null">
+            Add
+          </button>
+          <button *ngIf="editingEntry" class="btn btn-success" (click)="updateWeight()" [disabled]="!selectedDate || weight === null">
+            Update
+          </button>
+          <button *ngIf="editingEntry" class="btn btn-secondary ms-2" (click)="cancelEdit()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- History -->
+  <div class="card">
+    <div class="card-body">
+      <h5>Weight History</h5>
+
+      <div *ngIf="weights.length === 0" class="text-muted">
+        No weights logged yet.
+      </div>
+
+      <ul class="list-group mt-3" *ngIf="weights.length > 0">
+        <li *ngFor="let entry of weights" class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            {{ entry.date }} - {{ entry.weight }} kg
+          </div>
+          <div>
+            <button class="btn btn-sm btn-outline-primary me-2" (click)="startEdit(entry)">Edit</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteWeight(entry._id)">Delete</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

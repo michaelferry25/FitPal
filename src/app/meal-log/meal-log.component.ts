@@ -11,125 +11,96 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   styleUrls: ['./meal-log.component.css']
 })
 export class MealLogComponent implements OnInit {
-  Math = Math;
-
   food = '';
-  category = 'Breakfast';
-  quantity = 1;
-  unit = 'g';
-  calories = 0;
-  protein = 0;
-  carbs = 0;
-  fats = 0;
-
+  calories: number | null = null;
+  carbs: number | null = null;
+  protein: number | null = null;
+  fats: number | null = null;
   meals: any[] = [];
-  calorieGoal: number | null = null;
-  noGoal = false;
+  calorieGoal: number = 2000;
+
+  totalCalories = 0;
+  totalCarbs = 0;
+  totalProtein = 0;
+  totalFats = 0;
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    const email = JSON.parse(localStorage.getItem('user') || '{}').email;
+    this.loadMeals();
+    this.fetchUserGoal();
+  }
 
-    this.http.post<any>('http://localhost:5000/api/get-user-goals', { email }).subscribe({
-      next: res => {
-        if (res.success && res.user.calorieGoal) {
-          this.calorieGoal = res.user.calorieGoal;
-          this.loadMeals();
-        } else {
-          this.noGoal = true;
+  fetchUserGoal() {
+    const email = JSON.parse(localStorage.getItem('user') || '{}').email;
+    if (email) {
+      this.http.post<any>('http://localhost:5000/api/get-user-goals', { email }).subscribe({
+        next: res => {
+          if (res.success && res.user?.calorieGoal) {
+            this.calorieGoal = res.user.calorieGoal;
+          }
+        },
+        error: err => {
+          console.error('Error fetching calorie goal:', err);
         }
-      },
-      error: err => {
-        console.error(err);
-        this.noGoal = true;
-      }
-    });
+      });
+    }
   }
 
-  get totals() {
-    return this.meals.reduce((acc, meal) => {
-      acc.calories += meal.calories || 0;
-      acc.carbs += meal.carbs || 0;
-      acc.protein += meal.protein || 0;
-      acc.fats += meal.fats || 0;
-      return acc;
-    }, { calories: 0, carbs: 0, protein: 0, fats: 0 });
-  }
+  addMeal(form: any): void {
+    if (form.invalid) return;
 
-  getMacroBarWidth(actual: number, target: number): string {
-    const percent = (actual / target) * 100;
-    return Math.min(percent, 100) + '%';
-  }
-
-  getMacroBarClass(actual: number, target: number): string {
-    return actual > target ? 'bg-danger overflow' : 'bg-success';
-  }
-
-  logMeal(): void {
     const email = JSON.parse(localStorage.getItem('user') || '{}').email;
-    const meal = {
+    if (!email) return;
+
+    this.http.post<any>('http://localhost:5000/api/meals', {
+      email,
       food: this.food,
-      category: this.category,
-      quantity: this.quantity,
-      unit: this.unit,
       calories: this.calories,
       carbs: this.carbs,
       protein: this.protein,
       fats: this.fats,
-      email
-    };
-
-    this.http.post('http://localhost:5000/api/meals', meal).subscribe({
-      next: (res: any) => {
+      date: new Date().toISOString().split('T')[0]
+    }).subscribe({
+      next: res => {
         if (res.success) {
-          this.resetForm();
+          this.food = '';
+          this.calories = this.carbs = this.protein = this.fats = null;
           this.loadMeals();
         } else {
           alert(res.message);
         }
       },
       error: err => {
-        alert(err.error?.message || 'Meal logging failed');
+        console.error('Add meal error:', err);
       }
     });
   }
 
   loadMeals(): void {
     const email = JSON.parse(localStorage.getItem('user') || '{}').email;
+    if (!email) return;
 
     this.http.post<any>('http://localhost:5000/api/get-meals', { email }).subscribe({
       next: res => {
-        this.meals = res.meals || [];
+        if (res.success) {
+          this.meals = res.meals || [];
+          this.calculateTotals();
+        }
       },
       error: err => {
-        console.error(err);
+        console.error('Load meals error:', err);
       }
     });
   }
 
-  resetForm(): void {
-    this.food = '';
-    this.category = 'Breakfast';
-    this.quantity = 1;
-    this.unit = 'g';
-    this.calories = 0;
-    this.protein = 0;
-    this.carbs = 0;
-    this.fats = 0;
-  }
-
-  get remaining(): Record<'calories' | 'carbs' | 'protein' | 'fats', number> {
-    return {
-      calories: (this.calorieGoal || 0) - this.totals.calories,
-      carbs: Math.round(((this.calorieGoal || 0) * 0.25) / 4) - this.totals.carbs,
-      protein: Math.round(((this.calorieGoal || 0) * 0.25) / 4) - this.totals.protein,
-      fats: Math.round(((this.calorieGoal || 0) * 0.25) / 9) - this.totals.fats
-    };
-  }
-  macroKeys: Array<'carbs' | 'protein' | 'fats'> = ['carbs', 'protein', 'fats'];
-  getRemaining(macro: 'carbs' | 'protein' | 'fats'): number {
-    const value = this.remaining[macro];
-    return value < 0 ? 0 : value;
+  calculateTotals() {
+    this.totalCalories = this.totalCarbs = this.totalProtein = this.totalFats = 0;
+    for (const meal of this.meals) {
+      this.totalCalories += meal.calories || 0;
+      this.totalCarbs += meal.carbs || 0;
+      this.totalProtein += meal.protein || 0;
+      this.totalFats += meal.fats || 0;
+    }
   }
 }

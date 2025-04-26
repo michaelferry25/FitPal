@@ -1,17 +1,26 @@
-.progress-bar.overflow {
-  background-color: #dc3545 !important;
-  animation: pulseOver 1s infinite alternate;
+.container {
+  max-width: 700px;
 }
 
-@keyframes pulseOver {
-  from {
-    transform: scaleX(1);
-  }
-  to {
-    transform: scaleX(1.05);
-  }
+.progress-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-label {
-  font-size: 14px;
+.progress {
+  height: 20px;
+  background: #e9ecef;
+}
+
+.progress-bar {
+  transition: width 0.5s ease;
+}
+
+.card {
+  margin-top: 20px;
+}
+
+h4 {
+  margin-bottom: 15px;
 }

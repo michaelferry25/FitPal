@@ -29,6 +29,8 @@ export class ProgressComponent implements OnInit {
   maintenanceCalories: number | null = null;
   recommendedCalories: number | null = null;
 
+  showCalorieResults = false;
+
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
@@ -54,6 +56,7 @@ export class ProgressComponent implements OnInit {
     this.estimatedWeeks = null;
     this.maintenanceCalories = null;
     this.recommendedCalories = null;
+    this.showCalorieResults = false;
 
     if (goal === 'lose') {
       this.difficultyOptions = [
@@ -98,19 +101,18 @@ export class ProgressComponent implements OnInit {
   }
 
   calculateCalories(): void {
-    if (!this.gender || !this.age || !this.height || !this.currentWeight || !this.activityLevel) return;
+    if (!this.gender || !this.age || !this.height || !this.currentWeight || !this.activityLevel) {
+      alert('Please fill in all fields before calculating.');
+      return;
+    }
 
     const weight = this.currentWeight;
     const height = this.height;
     const age = this.age;
 
-    let bmr = 0;
-
-    if (this.gender === 'male') {
-      bmr = 10 * weight + 6.25 * height - 5 * age + 5;
-    } else {
-      bmr = 10 * weight + 6.25 * height - 5 * age - 161;
-    }
+    let bmr = this.gender === 'male'
+      ? 10 * weight + 6.25 * height - 5 * age + 5
+      : 10 * weight + 6.25 * height - 5 * age - 161;
 
     const activityFactors: { [key: string]: number } = {
       sedentary: 1.2,
@@ -128,7 +130,16 @@ export class ProgressComponent implements OnInit {
     const diff = goal === 'lose' ? -0.2 : goal === 'gain' ? 0.15 : 0;
     this.recommendedCalories = Math.round(tdee * (1 + diff));
 
+    this.showCalorieResults = true;
+  }
+
+  saveCalculatedGoal(): void {
     const email = JSON.parse(localStorage.getItem('user') || '{}').email;
+
+    if (!email) {
+      alert('User not logged in');
+      return;
+    }
 
     this.http.post('http://localhost:5000/api/save-goals', {
       email,
@@ -137,8 +148,13 @@ export class ProgressComponent implements OnInit {
       height: this.height,
       activityLevel: this.activityLevel,
       calorieGoal: this.recommendedCalories
-    }).subscribe(res => {
-      console.log('Goal data saved:', res);
+    }).subscribe({
+      next: () => {
+        alert('Goal saved successfully!');
+      },
+      error: () => {
+        alert('Error saving your goal. Try again.');
+      }
     });
   }
 
