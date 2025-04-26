@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Chart, registerables } from 'chart.js';
-
-Chart.register(...registerables);
+import { Chart } from 'chart.js/auto';
 
 @Component({
   selector: 'app-weight-log',
@@ -14,144 +12,134 @@ Chart.register(...registerables);
   styleUrls: ['./weight-log.component.css']
 })
 export class WeightLogComponent implements OnInit {
-  weights: any[] = [];
-  selectedDate = '';
+  weightLogs: any[] = [];
   weight: number | null = null;
-  maxDate = new Date().toISOString().split('T')[0];
-  editingEntry: any = null;
+  date: string = '';
   chart: any;
-
-  estimatedWeeks: number = 0;
-  startWeight: number = 0;
-  goalWeight: number = 0;
+  startWeight: number | null = null;
+  goalWeight: number | null = null;
+  estimatedWeeks: number | null = null;
+  email: string = '';
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.loadWeights();
-    this.loadGoalData();
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.email = user.email;
+
+    this.loadWeightLogs();
+    this.loadUserGoal();
   }
 
-  loadGoalData() {
-    const goalData = JSON.parse(localStorage.getItem('goalData') || '{}');
-    this.estimatedWeeks = goalData.estimatedWeeks || 0;
-    this.startWeight = goalData.startWeight || 0;
-    this.goalWeight = goalData.goalWeight || 0;
-  }
-
-  loadWeights() {
-    this.http.get<any>('http://localhost:5000/api/weight').subscribe({
+  loadUserGoal(): void {
+    this.http.post<any>('http://localhost:5000/api/get-user-goals', { email: this.email }).subscribe({
       next: res => {
-        this.weights = res.weights;
-        this.renderChart();
+        if (res.success && res.user) {
+          this.startWeight = res.user.startWeight || null;
+          this.goalWeight = res.user.goalWeight || null;
+          this.estimatedWeeks = res.user.estimatedWeeks || null;
+        }
       },
-      error: err => {
-        console.error('Error loading weights:', err);
-      }
+      error: err => console.error('Error loading user goal:', err)
     });
   }
 
-  addWeight() {
-    if (!this.selectedDate || this.weight === null) return;
-
-    const payload = { date: this.selectedDate, weight: this.weight };
-
-    this.http.post<any>('http://localhost:5000/api/weight', payload).subscribe({
+  loadWeightLogs(): void {
+    this.http.post<any>('http://localhost:5000/api/get-weight-log', { email: this.email }).subscribe({
       next: res => {
-        this.selectedDate = '';
-        this.weight = null;
-        this.loadWeights();
+        if (res.success) {
+          this.weightLogs = res.weights;
+          this.renderChart();
+        }
       },
-      error: err => {
-        console.error('Error saving weight:', err);
-      }
+      error: err => console.error('Error loading weight logs:', err)
     });
   }
 
-  startEdit(entry: any) {
-    this.editingEntry = entry;
-    this.selectedDate = entry.date;
-    this.weight = entry.weight;
-  }
+  logWeight(): void {
+    if (!this.weight || !this.date) {
+      alert('Please enter weight and date.');
+      return;
+    }
 
-  updateWeight() {
-    if (!this.editingEntry || !this.selectedDate || this.weight === null) return;
-
-    const payload = { date: this.selectedDate, weight: this.weight };
-
-    this.http.put<any>(`http://localhost:5000/api/weight/${this.editingEntry._id}`, payload).subscribe({
+    this.http.post<any>('http://localhost:5000/api/log-weight', {
+      email: this.email,
+      weight: this.weight,
+      date: this.date
+    }).subscribe({
       next: res => {
-        this.editingEntry = null;
-        this.selectedDate = '';
-        this.weight = null;
-        this.loadWeights();
+        if (res.success) {
+          alert('Weight logged successfully!');
+          this.weight = null;
+          this.date = '';
+          this.loadWeightLogs();
+        }
       },
-      error: err => {
-        console.error('Error updating weight:', err);
-      }
+      error: err => console.error('Error logging weight:', err)
     });
   }
 
-  deleteWeight(id: string) {
-    if (!confirm('Are you sure you want to delete this entry?')) return;
-
-    this.http.delete<any>(`http://localhost:5000/api/weight/${id}`).subscribe({
-      next: res => {
-        this.loadWeights();
-      },
-      error: err => {
-        console.error('Error deleting weight:', err);
-      }
-    });
+  formatDate(dateString: string): string {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
   }
 
-  renderChart() {
+  renderChart(): void {
     if (this.chart) {
       this.chart.destroy();
     }
 
-    const ctx = document.getElementById('weightChart') as HTMLCanvasElement;
+    const labels = this.weightLogs.map(log => this.formatDate(log.date));
+    const data = this.weightLogs.map(log => log.weight);
 
-    const actualData = this.weights.map(w => ({
-      x: w.date,
-      y: w.weight
-    }));
+    const startWeight = this.weightLogs.length > 0 ? this.weightLogs[0].weight : 80;
+    const goalWeight = this.goalWeight ?? 70;
+    const totalWeeks = this.estimatedWeeks ?? 10;
+    const extraWeeks = Math.ceil(totalWeeks * 1.1);
 
-    const idealData: { x: string, y: number }[] = [];
+    const idealLabels: string[] = [];
+    const idealData: number[] = [];
 
-    if (this.startWeight && this.goalWeight && this.estimatedWeeks) {
-      const extraWeeks = Math.ceil(this.estimatedWeeks * 0.1);
-      const totalWeeks = this.estimatedWeeks + extraWeeks;
-      const weeklyChange = (this.goalWeight - this.startWeight) / this.estimatedWeeks;
+    const firstDate = new Date(this.weightLogs[0]?.date || new Date());
+    for (let week = 0; week <= extraWeeks; week++) {
+      const futureDate = new Date(firstDate);
+      futureDate.setDate(firstDate.getDate() + week * 7);
+      idealLabels.push(this.formatDate(futureDate.toISOString().split('T')[0]));
 
-      for (let i = 0; i <= totalWeeks; i++) {
-        const futureDate = new Date();
-        futureDate.setDate(futureDate.getDate() + i * 7);
-        const formattedDate = futureDate.toISOString().split('T')[0];
-        let weight = this.startWeight + weeklyChange * i;
-        if (i >= this.estimatedWeeks) weight = this.goalWeight;
-        idealData.push({ x: formattedDate, y: parseFloat(weight.toFixed(1)) });
-      }
+      const progress = week / totalWeeks;
+      let interpolatedWeight = startWeight + (goalWeight - startWeight) * progress;
+      if (progress > 1) interpolatedWeight = goalWeight;
+      idealData.push(interpolatedWeight);
     }
 
-    this.chart = new Chart(ctx, {
+    this.chart = new Chart('weightChart', {
       type: 'line',
       data: {
+        labels: labels.length > idealLabels.length ? labels : idealLabels,
         datasets: [
           {
             label: 'Your Weight',
-            data: actualData,
-            borderColor: '#007bff',
-            tension: 0.3,
-            fill: false
+            data,
+            fill: false,
+            borderColor: 'blue',
+            backgroundColor: 'lightblue',
+            tension: 0.2,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            pointBackgroundColor: 'blue',
+            borderWidth: 2
           },
           {
             label: 'Ideal Progress',
             data: idealData,
-            borderColor: '#28a745',
+            fill: false,
+            borderColor: 'gold',
+            backgroundColor: 'gold',
             borderDash: [5, 5],
-            tension: 0.3,
-            fill: false
+            pointRadius: 4,
+            pointHoverRadius: 5,
+            pointBackgroundColor: 'gold',
+            borderWidth: 2
           }
         ]
       },
@@ -159,27 +147,28 @@ export class WeightLogComponent implements OnInit {
         responsive: true,
         scales: {
           x: {
-            type: 'time',
-            time: { unit: 'week' },
             title: {
               display: true,
-              text: 'Date'
+              text: 'Date',
+              color: 'black'
             }
           },
           y: {
             title: {
               display: true,
-              text: 'Weight (kg)'
-            }
+              text: 'Weight (kg)',
+              color: 'black'
+            },
+            beginAtZero: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
           }
         }
       }
     });
-  }
-
-  cancelEdit() {
-    this.editingEntry = null;
-    this.selectedDate = '';
-    this.weight = null;
   }
 }

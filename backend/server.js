@@ -304,20 +304,18 @@ app.post('/api/get-user-goals', async (req, res) => {
 
 // Log user's daily weight
 app.post('/api/log-weight', async (req, res) => {
-  const { email, weight } = req.body;
+  const { email, weight, date } = req.body;
 
-  if (!email || !weight) {
+  if (!email || !weight || !date) {
     return res.status(400).json({ success: false, message: 'Missing required fields.' });
   }
 
   try {
-    const today = new Date().toISOString().split('T')[0];
-    
-    let weightLog = await Weight.findOne({ email, date: today });
+    let weightLog = await Weight.findOne({ email, date });
     if (weightLog) {
       weightLog.weight = weight;
     } else {
-      weightLog = new Weight({ email, weight, date: today });
+      weightLog = new Weight({ email, weight, date });
     }
 
     await weightLog.save();
