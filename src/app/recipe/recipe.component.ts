@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -15,12 +15,15 @@ export class RecipeComponent implements OnInit {
   categories = ['Chicken', 'Beef', 'Seafood', 'Vegan', 'Vegetarian'];
   selectedCategory = '';
   meals: any[] = [];
-  searchQuery = ''; // NEW
+  searchQuery = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.fetchMeals();
+    this.route.queryParams.subscribe(params => {
+      this.searchQuery = params['search'] || '';
+      this.fetchMeals();
+    });
   }
 
   fetchMeals(): void {
@@ -32,11 +35,10 @@ export class RecipeComponent implements OnInit {
       next: data => {
         if (data.success) {
           this.meals = this.searchQuery
-          ? data.meals.filter((m: { title: string }) =>
-            m.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-          )
-        : data.meals;
-        
+            ? data.meals.filter((m: { title: string }) =>
+                m.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+              )
+            : data.meals;
         } else {
           alert(data.message);
         }

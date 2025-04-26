@@ -17,12 +17,12 @@
       <div class="col-md-4">
         <label for="search" class="form-label">Search</label>
         <input
-          id="search"
           type="text"
           class="form-control"
-          placeholder="Search meals..."
           [(ngModel)]="searchQuery"
-          (input)="onSearchChange()"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Search meals..."
+          name="searchQuery"
         />
       </div>
     </div>

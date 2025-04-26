@@ -35,9 +35,16 @@
         <a class="nav-link text-white px-2" routerLink="/blog">Blog</a>
       </li>
     </ul>
-    <form class="d-flex">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <form (ngSubmit)="onSubmitSearch()" class="d-flex">
+      <input
+        class="form-control me-2"
+        type="search"
+        placeholder="Search meals/recipes"
+        aria-label="Search"
+        [(ngModel)]="searchQuery"
+        name="searchQuery"
+      />
       <button class="btn btn-outline-light" type="submit">Search</button>
-    </form>
+    </form>      
   </div>
 </nav>
