@@ -344,3 +344,90 @@ app.post('/api/get-weight-log', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 });
+
+// Save dark mode preference
+app.post('/api/dark-mode', async (req, res) => {
+  try {
+    const { email, darkMode } = req.body;
+    const user = await User.findOneAndUpdate(
+      { email },
+      { darkMode },
+      { new: true }
+    );
+    res.json({ success: true, darkMode: user.darkMode });
+  } catch (err) {
+    console.error('Dark mode save error:', err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Get dark mode preference
+app.get('/api/dark-mode/:email', async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.params.email });
+    if (!user) return res.status(404).json({ success: false });
+    res.json({ success: true, darkMode: user.darkMode });
+  } catch (err) {
+    console.error('Dark mode fetch error:', err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+app.post('/api/save-dark-mode', async (req, res) => {
+  try {
+    const { email, darkMode } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Email is required' });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    user.darkMode = darkMode;
+    await user.save();
+
+    return res.json({ success: true, message: 'Dark mode updated successfully' });
+  } catch (err) {
+    console.error('Error saving dark mode setting:', err);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+app.post('/api/save-settings', async (req, res) => {
+  const {
+    email,
+    darkMode,
+    notifications,
+    notificationFrequency,
+    measurementSystem,
+    weightGoal,
+    shareProgress,
+    reminderTime,
+    calorieGoal
+  } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Update the user settings
+    user.darkMode = darkMode;
+    user.notifications = notifications;
+    user.notificationFrequency = notificationFrequency;
+    user.measurementSystem = measurementSystem;
+    user.weightGoal = weightGoal;
+    user.shareProgress = shareProgress;
+    user.reminderTime = reminderTime;
+    user.calorieGoal = calorieGoal;
+
+    await user.save();
+
+    return res.json({ success: true, message: "Settings saved successfully" });
+  } catch (err) {
+    console.error('Error saving user settings:', err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});

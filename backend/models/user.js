@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema({
   age: {type: Number},
   height: { type: Number},
   activityLevel: { type: String},
-  calorieGoal: { type: Number}
+  calorieGoal: { type: Number},
+  darkMode: { type:Boolean, default:false }
 });
 
 userSchema.pre('save', async function(next) {

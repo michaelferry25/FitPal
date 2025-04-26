@@ -1,15 +1,49 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+
 body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  router-outlet + * {
-    flex: 1;
-    padding: 1rem;
-  }
-  
-  app-footer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .card,
+body.dark-mode .btn {
+  background-color: #1e1e1e !important;
+  color: #f1f1f1 !important;
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+  background-color: #2c2c2c !important;
+  color: #fff !important;
+}
+
+router-outlet + * {
+  flex: 1;
+  padding: 1rem;
+}
+
+app-footer {
     margin-top: auto; /* Pushes footer to bottom */
+}
+
+body.dark-mode app-footer {
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+  }
+  
+  body.dark-mode app-footer .text-muted {
+    color: #8f8f8f !important;
+  }
+  
+  body.dark-mode app-footer .form-select {
+    background-color: #2c2c2c;
+    color: #fff;
+    border-color: #404040;
   }
