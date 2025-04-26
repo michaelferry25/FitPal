@@ -13,6 +13,10 @@ import { MealLogComponent } from './meal-log/meal-log.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ProgressComponent } from './goals/progress/progress.component';
 import { WeightLogComponent } from './goals/weight-log/weight-log.component';
+import { AboutComponent } from './info/about/about.component';
+import { TermsComponent } from './info/terms/terms.component';
+import { PrivacyComponent } from './info/privacy/privacy.component';
+import { ContactComponent } from './info/contact/contact.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -28,5 +32,9 @@ export const routes: Routes = [
   { path: 'goals/progress', component: ProgressComponent, canActivate: [AuthGuard] },
   { path: 'meal-log', component: MealLogComponent, canActivate: [AuthGuard] },
   { path: 'recipes/:id', component: RecipeDetailsComponent, canActivate: [AuthGuard] },
-  { path: 'goals/weight-log', component: WeightLogComponent, canActivate: [AuthGuard] }
+  { path: 'goals/weight-log', component: WeightLogComponent, canActivate: [AuthGuard] },
+  { path: 'about', component: AboutComponent },
+  { path: 'terms', component: TermsComponent },
+  { path: 'privacy', component: PrivacyComponent },
+  { path: 'contact', component: ContactComponent },
 ];
