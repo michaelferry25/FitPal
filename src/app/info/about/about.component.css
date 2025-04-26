@@ -1,0 +1,95 @@
+.about-page {
+    padding: 2rem;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .hero {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .hero h1 {
+    font-size: 2.8rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .hero p {
+    font-size: 1.2rem;
+    color: var(--text-secondary-color);
+  }
+  
+  .content h2 {
+    margin-top: 2rem;
+    font-size: 2rem;
+  }
+  
+  .content p {
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+    color: var(--text-primary-color);
+  }
+  
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+  
+  .feature-item {
+    flex: 1 1 250px;
+    background: var(--card-background, #f8f9fa);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .team {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+  }
+  
+  .team-member {
+    text-align: center;
+  }
+  
+  .team-member img {
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .cta {
+    margin-top: 3rem;
+    text-align: center;
+  }
+  
+  .cta h2 {
+    font-size: 2rem;
+  }
+  
+  .cta .btn-primary {
+    margin-top: 1rem;
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  /* Dark mode */
+  body.dark-mode .about-page {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+  
+  body.dark-mode .feature-item {
+    background-color: #1e1e1e;
+  }
+  
+  body.dark-mode .cta .btn-primary {
+    background-color: #3cb371;
+  }
+  

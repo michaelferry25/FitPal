@@ -33,8 +33,8 @@ export const routes: Routes = [
   { path: 'meal-log', component: MealLogComponent, canActivate: [AuthGuard] },
   { path: 'recipes/:id', component: RecipeDetailsComponent, canActivate: [AuthGuard] },
   { path: 'goals/weight-log', component: WeightLogComponent, canActivate: [AuthGuard] },
-  { path: 'about', component: AboutComponent },
-  { path: 'terms', component: TermsComponent },
-  { path: 'privacy', component: PrivacyComponent },
-  { path: 'contact', component: ContactComponent },
+  { path: 'info/about', component: AboutComponent },
+  { path: 'info/terms', component: TermsComponent },
+  { path: 'info/privacy', component: PrivacyComponent },
+  { path: 'info/contact', component: ContactComponent },
 ];
