@@ -13,8 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 const PORT = 5000;
-const uri = 'mongodb://localhost:27017/fitpal';
-
+const uri = "mongodb+srv://michaelferry2004:A4NJsrBBFfCXCfQX@fitpal.kuaipg7.mongodb.net/?retryWrites=true&w=majority&appName=FitPal";
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected"))
   .catch(err => {
