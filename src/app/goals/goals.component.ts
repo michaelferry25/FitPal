@@ -13,6 +13,8 @@ import { RouterModule } from '@angular/router';
 })
 export class GoalsComponent implements OnInit {
   goals = {
+    // Default values for the goals
+    // These can be changed by the user in the form
     dailyCalories: 2000,
     proteins: 150,
     carbs: 250,
@@ -21,6 +23,7 @@ export class GoalsComponent implements OnInit {
   };
   currentGoal: any = null;
 
+  //if the user is currently editing the goals
   isEditing = false;
 
   constructor(private http: HttpClient) {}
@@ -29,6 +32,7 @@ export class GoalsComponent implements OnInit {
     this.loadGoals();
   }
 
+  // Called when the form is submitted
   saveGoals(): void {
     this.http.post<any>('http://localhost:5000/api/goals', this.goals).subscribe({
       next: res => {
@@ -43,12 +47,16 @@ export class GoalsComponent implements OnInit {
     });
   }
 
+  // Fetches the current goals from the server
+  // and updates the goals variable with the response data
   loadGoals(): void {
     this.http.get<any>('http://localhost:5000/api/goals').subscribe({
       next: res => {
         this.currentGoal = res.goal;
         if (this.currentGoal) {
           this.goals = { 
+            // Update the goals variable with the response data
+            // This allows the user to see their current goals when the component loads
             dailyCalories: this.currentGoal.dailyCalories,
             proteins: this.currentGoal.proteins,
             carbs: this.currentGoal.carbs,
@@ -58,12 +66,14 @@ export class GoalsComponent implements OnInit {
         }
       },
       error: err => {
+        // Handle error response from the server
         console.error('Error loading goals:', err);
       }
     });
   }
 
   resetGoals(): void {
+    // Resets the goals to default values
     this.goals = {
       dailyCalories: 2000,
       proteins: 150,
@@ -74,6 +84,8 @@ export class GoalsComponent implements OnInit {
   }
 
   startEditing(): void {
+    // Sets the isEditing variable to true to enable editing mode
+    // This allows the user to edit their goals in the form
     this.isEditing = true;
   }
 }

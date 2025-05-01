@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+// Goal model
+// This schema defines the structure of the Goal document in the MongoDB database
 const goalSchema = new mongoose.Schema({
   dailyCalories: { type: Number, required: true },
   proteins: { type: Number, required: true },

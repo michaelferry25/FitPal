@@ -1,12 +1,15 @@
 <div class="container my-4">
   <div class="progress-section mb-4">
+    <!-- Daily progress section with calorie and macro tracking -->
     <h5>Daily Progress</h5>
 
     <div class="mb-3">
       <div class="d-flex justify-content-between">
+        <!-- Display total calories and goal -->
         <span>Calories</span>
         <span>{{ totalCalories }} / {{ calorieGoal }} kcal</span>
       </div>
+      <!-- Progress bar for calories -->
       <div class="progress">
         <div 
           class="progress-bar" 
@@ -17,11 +20,13 @@
       </div>
     </div>
 
+    <!-- Progress bars for macros carbs, protein and fats -->
     <div class="mb-3" *ngFor="let macro of ['carbs', 'protein', 'fats']">
       <div class="d-flex justify-content-between">
         <span>{{ macro | titlecase }}</span>
         <span>{{ macro == 'carbs' ? totalCarbs : macro == 'protein' ? totalProtein : totalFats }}g</span>
       </div>
+      <!-- Progress bar for each macro -->
       <div class="progress">
         <div 
           class="progress-bar" 
@@ -34,15 +39,19 @@
     </div>
   </div>
 
+  <!-- Form to add a meal -->
   <form (ngSubmit)="addMeal(mealForm)" #mealForm="ngForm" class="card p-4">
     <h4>Add a Meal</h4>
 
+    <!-- Form fields for meal details -->
     <div class="mb-3">
+      <!-- Food name input -->
       <label for="food" class="form-label">Food Name</label>
       <input id="food" name="food" [(ngModel)]="food" class="form-control" required>
     </div>
 
     <div class="mb-3">
+      <!-- Calories  input-->
       <label for="calories" class="form-label">Calories (kcal)</label>
       <input id="calories" type="number" name="calories" [(ngModel)]="calories" class="form-control" required>
     </div>
@@ -62,9 +71,11 @@
       <input id="fats" type="number" name="fats" [(ngModel)]="fats" class="form-control">
     </div>
 
+    <!-- Add meal button-->
     <button type="submit" class="btn btn-primary">Add Meal</button>
   </form>
 
+  <!-- Display meals logged today -->
   <div class="card mt-4 p-4">
     <h4>Meals Logged Today</h4>
     <ul class="list-group">

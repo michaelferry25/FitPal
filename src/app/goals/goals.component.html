@@ -1,58 +1,70 @@
 <div class="container my-4">
+  <!-- Nutrition goals page -->
   <h2>Nutrition Goals</h2>
   <hr>
 
   <div *ngIf="currentGoal; else noGoalsSet">
 
     <div *ngIf="!isEditing; else editForm">
+      <!-- Display current goals -->
       <p>Calories: {{ currentGoal.dailyCalories }} kcal</p>
       <p>Proteins: {{ currentGoal.proteins }} g</p>
       <p>Carbs: {{ currentGoal.carbs }} g</p>
       <p>Fats: {{ currentGoal.fats }} g</p>
       <p>Water Intake: {{ currentGoal.waterLitres }} Litres</p>
 
+      <!-- Button to edit goals -->
       <button class="btn btn-outline-primary" (click)="startEditing()">Edit Goals</button>
     </div>
 
     <ng-template #editForm>
+      <!-- Form to edit goals -->
       <form (ngSubmit)="saveGoals()" #goalForm="ngForm" class="card p-4">
         <h4>Edit Your Goals</h4>
 
         <div class="mb-3">
+          <!-- Daily calories input -->
           <label for="dailyCalories" class="form-label">Daily Calories (kcal)</label>
           <input id="dailyCalories" type="number" class="form-control" [(ngModel)]="goals.dailyCalories" name="dailyCalories" required>
         </div>
 
         <div class="mb-3">
+          <!-- Daily protein input -->
           <label for="proteins" class="form-label">Proteins (g)</label>
           <input id="proteins" type="number" class="form-control" [(ngModel)]="goals.proteins" name="proteins" required>
         </div>
 
         <div class="mb-3">
+          <!-- Daily carbs input -->
           <label for="carbs" class="form-label">Carbs (g)</label>
           <input id="carbs" type="number" class="form-control" [(ngModel)]="goals.carbs" name="carbs" required>
         </div>
 
         <div class="mb-3">
+          <!-- Daily fats input -->
           <label for="fats" class="form-label">Fats (g)</label>
           <input id="fats" type="number" class="form-control" [(ngModel)]="goals.fats" name="fats" required>
         </div>
 
         <div class="mb-3">
+          <!-- Daily water intake input -->
           <label for="waterLitres" class="form-label">Water Intake (Litres)</label>
           <input id="waterLitres" type="number" step="0.1" class="form-control" [(ngModel)]="goals.waterLitres" name="waterLitres" required>
         </div>
 
+        <!-- Save changes-->
         <button type="submit" class="btn btn-success">Save Changes</button>
       </form>
     </ng-template>
 
   </div>
 
+  <!-- Button to create a new goal if no goal is set -->
   <button class="btn btn-outline-primary mt-3" routerLink="/goals/progress">
     Create a New Goal
   </button>
 
+  <!-- Message to display if no goals are set -->
   <ng-template #noGoalsSet>
     <div class="alert alert-warning mt-4">No goals set yet.</div>
   </ng-template>

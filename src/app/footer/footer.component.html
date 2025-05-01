@@ -1,16 +1,20 @@
 <div class="container-fluid bg-light py-3 mt-auto">
   <div class="d-flex justify-content-center mb-2">
+    <!-- Links to different info pages of the app -->
     <a class="me-3 text-decoration-none text-muted" routerLink="./info/about">About</a>
     <a class="me-3 text-decoration-none text-muted" routerLink="./info/terms">Terms</a>
     <a class="me-3 text-decoration-none text-muted" routerLink="./info/privacy">Privacy</a>
     <a class="me-3 text-decoration-none text-muted" routerLink="./info/contact">Contact Us</a>
   </div>
   <div class="d-flex justify-content-center mb-2">
+    <!-- Language selection dropdown -->
+     <!-- Not functional just for image and display really-->
     <select class="form-select w-auto" [(ngModel)]="selectedLanguage">
       <option *ngFor="let lang of languages" [value]="lang.code">{{ lang.name }}</option>
     </select>
   </div>
   <div class="text-center text-muted">
+    <!--Copyright display mock thing-->
     © 2025 FitPal, Inc.
   </div>
 </div>

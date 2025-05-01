@@ -1,11 +1,14 @@
 <div class="container mt-5" style="max-width: 500px;">
+  <!-- centres the card and limits its width -->
   <div class="card shadow-sm">
     <div class="card-body p-4">
       <h2 class="text-center mb-4">Create An Account</h2>
       <p class="text-center text-muted">Register with your details below</p>
 
+      <!-- signup form -->
       <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)">
         <div class="mb-3">
+          <!-- first name input -->
           <label for="firstname" class="form-label">Firstname</label>
           <input
             type="text"
@@ -17,6 +20,7 @@
           />
         </div>
         <div class="mb-3">
+          <!-- surname input -->
           <label for="surname" class="form-label">Surname</label>
           <input
             type="text"
@@ -28,6 +32,7 @@
           />
         </div>
         <div class="mb-3">
+          <!-- date of birth picker -->
           <label for="dateOfBirth" class="form-label">Date of Birth</label>
           <input
             type="date"
@@ -39,6 +44,7 @@
           />
         </div>
         <div class="mb-3">
+          <!-- address field -->
           <label for="address" class="form-label">Address</label>
           <input
             type="text"
@@ -50,6 +56,7 @@
           />
         </div>
         <div class="mb-3">
+          <!-- email input -->
           <label for="email" class="form-label">Email</label>
           <input
             type="email"
@@ -61,6 +68,7 @@
           />
         </div>
         <div class="mb-3">
+          <!-- confirm email -->
           <label for="confirmEmail" class="form-label">Confirm Email</label>
           <input
             type="email"
@@ -72,6 +80,7 @@
           />
         </div>
         <div class="mb-3">
+          <!-- password entry -->
           <label for="password" class="form-label">Password</label>
           <input
             type="password"
@@ -83,6 +92,7 @@
           />
         </div>
         <div class="mb-3">
+          <!-- confirm password -->
           <label for="confirmPassword" class="form-label">Confirm Password</label>
           <input
             type="password"
@@ -94,6 +104,7 @@
           />
         </div>
         <div class="form-check mb-3">
+          <!-- terms checkbox -->
           <input
             class="form-check-input"
             type="checkbox"
@@ -106,6 +117,7 @@
           </label>
         </div>
 
+        <!-- submit button disabled until form is valid -->
         <button
           type="submit"
           class="btn btn-primary w-100"
@@ -115,6 +127,7 @@
         </button>
       </form>
 
+      <!-- link to login if they’ve already got an account -->
       <div class="text-center mt-3">
         <span>Already Have An Account? </span>
         <a routerLink="/login">Sign In</a>

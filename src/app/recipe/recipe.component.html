@@ -3,6 +3,7 @@
   
     <div class="row mb-3">
       <div class="col-md-4">
+        <!-- Category filter dropdown -->
         <label for="category" class="form-label">Select Category</label>
         <select
           id="category"
@@ -10,11 +11,13 @@
           [(ngModel)]="selectedCategory"
           (change)="onCategoryChange()"
         >
+          <!-- Default option for categories is all -->
           <option value="">All</option>
           <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
         </select>
       </div>
       <div class="col-md-4">
+        <!-- Saeach box -->
         <label for="search" class="form-label">Search</label>
         <input
           type="text"
@@ -28,6 +31,7 @@
     </div>
   
     <div class="row">
+      <!-- Loop through the meals and display them in cards -->
       <div class="col-md-4" *ngFor="let meal of meals">
         <div class="card mb-3">
           <img [src]="meal.image" class="card-img-top" [alt]="meal.title" />
@@ -36,6 +40,7 @@
             <p class="card-text">
               <small class="text-muted">{{ meal.category }}</small>
             </p>
+            <!-- Display the meal details button -->
             <button class="btn btn-primary" (click)="viewDetails(meal.id)">
               View Details
             </button>

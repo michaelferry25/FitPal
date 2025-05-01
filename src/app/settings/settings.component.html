@@ -1,20 +1,25 @@
 <div class="container mt-5">
     <h2>Settings</h2>
+    <!-- Form for the users settings-->
     <form (ngSubmit)="saveSettings()">
       <div class="form-check form-switch">
+        <!-- Dark mode toggle switch -->
         <input class="form-check-input" type="checkbox" id="darkModeSwitch" [(ngModel)]="darkMode" name="darkMode" (change)="toggleDarkMode()">
         <label class="form-check-label" for="darkModeSwitch">Enable Dark Mode</label>
       </div>
     
+      <!--Save settings button-->
       <button type="submit" class="btn btn-primary mt-3">Save Settings</button>
     </form>
       
     <form>
       <div class="form-check form-switch mb-3">
+        <!-- Notifications toggle switch -->
         <input class="form-check-input" type="checkbox" id="notifications" [(ngModel)]="notifications" name="notifications">
         <label class="form-check-label" for="notifications">Enable Notifications</label>
       </div>
       <div class="mb-3">
+        <!-- Notification frequency dropdown -->
         <label for="notificationFrequency" class="form-label">Notification Frequency</label>
         <select id="notificationFrequency" class="form-select" [(ngModel)]="notificationFrequency" name="notificationFrequency">
           <option value="instant">Instant</option>
@@ -23,6 +28,7 @@
         </select>
       </div>
       <div class="mb-3">
+        <!-- Measurement system dropdown -->
         <label for="measurementSystem" class="form-label">Measurement System</label>
         <select id="measurementSystem" class="form-select" [(ngModel)]="measurementSystem" name="measurementSystem">
           <option value="metric">Metric</option>
@@ -30,21 +36,27 @@
         </select>
       </div>
       <div class="mb-3">
+        <!-- Weight goal input -->
         <label for="weightGoal" class="form-label">Weight Goal (kg)</label>
         <input type="number" id="weightGoal" class="form-control" [(ngModel)]="weightGoal" name="weightGoal">
       </div>
       <div class="form-check form-switch mb-3">
+        <!-- Share progress toggle switch -->
         <input class="form-check-input" type="checkbox" id="shareProgress" [(ngModel)]="shareProgress" name="shareProgress">
         <label class="form-check-label" for="shareProgress">Share Progress Publicly</label>
       </div>
       <div class="mb-3">
+        <!-- Workout reminder time input -->
         <label for="reminderTime" class="form-label">Workout Reminder Time</label>
         <input type="time" id="reminderTime" class="form-control" [(ngModel)]="reminderTime" name="reminderTime">
       </div>
       <div class="mb-3">
+        <!-- Daily calorie goal input -->
+        <!-- This is a number input for the daily calorie goal for manual override -->
         <label for="calorieGoal" class="form-label">Daily Calorie Goal</label>
         <input type="number" id="calorieGoal" class="form-control" [(ngModel)]="calorieGoal" name="calorieGoal">
       </div>
+      <!-- Second save settings button -->
       <button type="submit" class="btn btn-primary">Save Settings</button>
     </form>
   </div>

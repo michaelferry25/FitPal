@@ -1,11 +1,15 @@
 <div class="container mt-5" style="max-width: 400px;">
+
   <div class="card shadow-sm">
     <div class="card-body p-4">
+      <!-- centres the card and limits its width -->
       <h2 class="text-center mb-4">Sign In</h2>
+      <!---- message to show if user is not logged in -->
       <div *ngIf="showAuthMessage" class="alert alert-info">
         <strong>Hey there!</strong> We'd love to have you explore more, but you need to be signed in first.
         Not registered yet? <a routerLink="/signup">Click here to join us!</a>
       </div>      
+      <!--form to login -->
       <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
@@ -18,11 +22,13 @@
             name="email"
             required
           />
+          <!-- message to show if email is not provided -->
           <div *ngIf="loginForm.submitted && !email" class="text-danger">
             Email is required!
           </div>
         </div>
 
+        <!-- password input -->
         <div class="mb-3">
           <label for="password" class="form-label">Password</label>
           <input
@@ -34,16 +40,23 @@
             name="password"
             required
           />
+          <!-- message to show if password is not provided -->
           <div *ngIf="loginForm.submitted && !password" class="text-danger">
             Password is required!
           </div>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">
+        <!-- message to show if login fails -->
+        <div *ngIf="loginError" class="alert alert-danger">
+          <strong>Oops!</strong> Invalid email or password. Please try again.
+        </div>
+          <button type="submit" class="btn btn-primary w-100">
           Login
         </button>
       </form>
+      
       <div class="text-center mt-3">
+        <!-- message to show if user doesnt already have an account ask to create one-->
         <span>Don't have an account? </span>
         <a routerLink="/signup">Create One</a>
       </div>

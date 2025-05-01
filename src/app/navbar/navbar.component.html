@@ -1,21 +1,27 @@
 <nav class="navbar p-0 top-bar">
   <div class="container-fluid justify-content-between align-items-center py-2 px-3">
+    <!-- Top Navbar and FitPal name -->
     <span class="brand-name">FitPal</span>
     <div>
+      <!-- User greeting -->
       <ng-container *ngIf="user; else loginTemplate">
+        <!-- Display the user's first name and logout button -->
         <span class="me-3">Hi {{ user.firstname }}</span>
         <a class="text-white text-decoration-none me-3" routerLink="./info/contact">Help</a>
         <a class="text-white text-decoration-none me-3" routerLink="/settings">Settings</a>
+        <!-- Logout button -->
         <button class="btn btn-sm btn-outline-light" (click)="logout()">Logout</button>
       </ng-container>
       <ng-template #loginTemplate>
+        <!-- If user is not logged in, show login button -->
         <a class="btn btn-sm btn-light" routerLink="/login">Login</a>
       </ng-template>
     </div>
   </div>
 </nav>
 
-
+<!-- Second Navbar with links to different sections of the app -->
+<!-- This navbar is always visible and contains links to different sections of the app, protected by authGuard -->
 <nav class="navbar p-0 second-bar">
   <div class="container-fluid py-2 px-3">
     <ul class="nav me-auto">
@@ -35,6 +41,7 @@
         <a routerLink="/goals/weight-log" class="nav-link text-white">Track Weight</a>
       </li>
     </ul>
+    <!-- Search bar for recipes -->
     <form (ngSubmit)="onSubmitSearch()" class="d-flex">
       <input
         class="form-control me-2"
@@ -44,6 +51,7 @@
         [(ngModel)]="searchQuery"
         name="searchQuery"
       />
+      <!-- Search button -->
       <button class="btn btn-outline-light" type="submit">Search</button>
     </form>      
   </div>

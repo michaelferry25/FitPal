@@ -18,6 +18,9 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUser();
+    // Listens for changes in local storage to update the user information
+    // and reload the user data when the page is refreshed or navigated
+    // and when the user logs out
     window.addEventListener('storage', () => this.loadUser());
 
     this.router.events.subscribe((event: Event) => {
@@ -27,17 +30,22 @@ export class NavbarComponent implements OnInit {
     });
   }
 
+  // Loads the user information from local storage
   loadUser() {
     const stored = localStorage.getItem('user');
     this.user = stored ? JSON.parse(stored) : null;
   }
 
+  // Logs out the user by removing the user information from local storage
+  // and navigating to the login page
   logout() {
     localStorage.removeItem('user');
     this.user = null;
     this.router.navigate(['/login']);
   }
 
+  // Called when the search form is submitted
+  // and navigates to the recipes page with the search
   onSubmitSearch() {
     if (this.searchQuery.trim()) {
       this.router.navigate(['/recipes'], { queryParams: { search: this.searchQuery.trim() } });

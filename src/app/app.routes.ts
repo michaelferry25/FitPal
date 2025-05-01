@@ -18,6 +18,7 @@ import { TermsComponent } from './info/terms/terms.component';
 import { PrivacyComponent } from './info/privacy/privacy.component';
 import { ContactComponent } from './info/contact/contact.component';
 
+// Define the routes for the application
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'landing-page', component: LandingPageComponent },

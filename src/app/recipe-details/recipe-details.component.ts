@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./recipe-details.component.css']
 })
 export class RecipeDetailsComponent implements OnInit {
+  // form fields with their initial empty values
   recipeId = '';
   recipe: any = null;
 
@@ -23,15 +24,20 @@ export class RecipeDetailsComponent implements OnInit {
     });
   }
 
+  // Fetches the recipe details from the server using the recipeId
+  // and updates the recipe variable with the response data
   fetchRecipeDetail(): void {
     this.http.get<any>(`http://localhost:5000/api/recipes/${this.recipeId}`).subscribe({
       next: data => {
+        // Check if the response is successful and contains recipe data
+        // and then update the recipe variable with the response data
         if (data.success) {
           this.recipe = data.recipe;
         } else {
           alert(data.message);
         }
       },
+      // Handle error response from the server
       error: () => {
         alert('Error fetching recipe details');
       }

@@ -1,4 +1,5 @@
 .card {
+  /* No solid border, round it off a bit */
     border: none;
     border-radius: 10px;
   }

@@ -11,7 +11,14 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './recipe.component.html',
   styleUrls: ['./recipe.component.css']
 })
+
+// RecipeComponent is responsible for displaying a list of recipes
+// and allowing users to filter them by category or search query.
 export class RecipeComponent implements OnInit {
+
+  // fields with their initial empty values
+  // categories is an array of recipe categories
+  // selectedCategory is the currently selected category for filtering
   categories = ['Chicken', 'Beef', 'Seafood', 'Vegan', 'Vegetarian'];
   selectedCategory = '';
   meals: any[] = [];
@@ -26,14 +33,17 @@ export class RecipeComponent implements OnInit {
     });
   }
 
+  // Fetches the list of meals from the API from the server based on the selected category and search query
   fetchMeals(): void {
     let url = 'http://localhost:5000/api/recipes';
     if (this.selectedCategory) {
+      // If a category is selected, append it to the URL as a query parameter
       url += `?category=${this.selectedCategory}`;
     }
     this.http.get<any>(url).subscribe({
       next: data => {
         if (data.success) {
+          // If the response is successful, filter the meals based on the search query
           this.meals = this.searchQuery
             ? data.meals.filter((m: { title: string }) =>
                 m.title.toLowerCase().includes(this.searchQuery.toLowerCase())

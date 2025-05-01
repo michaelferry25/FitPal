@@ -11,6 +11,8 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent {
+  // Language selection
+  //Simply for display purposes, not functional
   languages = [
     { code: 'en', name: 'English' },
     { code: 'de', name: 'Deutsch' },

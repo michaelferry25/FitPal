@@ -11,6 +11,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
+  // form fields with their initial empty values
+  // darkMode: boolean = false;
   darkMode: boolean = false;
   notifications: boolean = true;
   notificationFrequency: string = 'daily';
@@ -22,6 +24,8 @@ export class SettingsComponent implements OnInit {
 
   email: string = '';
 
+  // constructor injects HttpClient for API calls
+  // and initializes the darkMode variable based on local storage, gone when page refresh
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -29,6 +33,8 @@ export class SettingsComponent implements OnInit {
     if (user && user.email) {
       this.email = user.email;
     }
+    // Check if dark mode preference is saved in local storage
+    // and then set the darkMode variable based on that
     const savedDarkMode = localStorage.getItem('darkMode');
     if (savedDarkMode !== null) {
       this.darkMode = savedDarkMode === 'true';
@@ -41,6 +47,7 @@ export class SettingsComponent implements OnInit {
     this.applyDarkMode();
   }
 
+  // Apply dark mode class to the body element
   applyDarkMode(): void {
     if (this.darkMode) {
       document.body.classList.add('dark-mode');
@@ -49,6 +56,8 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+  // Save settings to the server and local storage
+  // and show an alert message to the user
   saveSettings(): void {
     if (!this.email) {
       alert('User not found. Please login.');
@@ -67,15 +76,18 @@ export class SettingsComponent implements OnInit {
       calorieGoal: this.calorieGoal
     };
 
+    // Post the settings to the server
     this.http.post('http://localhost:5000/api/save-settings', settings).subscribe({
       next: (res: any) => {
         if (res.success) {
           localStorage.setItem('darkMode', this.darkMode.toString());
+          // Alert the user that settings have been saved successfully
           alert('Settings saved successfully!');
         } else {
           alert(res.message || 'Failed to save settings.');
         }
       },
+      //Error alert message if the server returns an error
       error: (err) => {
         console.error('Error saving settings:', err);
         alert('Server error while saving settings.');

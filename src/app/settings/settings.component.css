@@ -1,8 +1,9 @@
 body.dark-mode {
+  /* Dark mode styles for the body and main content area */
     background-color: #121212;
     color: #f1f1f1;
   }
-  
+  /* Dark mode styles for the navbar, cards, buttons, and inputs */
   body.dark-mode .navbar,
   body.dark-mode .card,
   body.dark-mode .btn {

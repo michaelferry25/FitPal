@@ -1,4 +1,6 @@
 .card {
+
+    /* Gives it rounded corners */
     border: none;
     border-radius: 10px;
   }

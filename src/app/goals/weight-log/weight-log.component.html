@@ -1,7 +1,9 @@
 <div class="container mt-5">
+  <!--Track your Weight page-->
   <h2>Track Your Weight</h2>
 
   <div class="mb-3">
+    <!-- Input fields for weight and date -->
     <input
       type="number"
       class="form-control mb-2"
@@ -15,9 +17,11 @@
     />
   </div>
 
+  <!-- Button to add weight entry -->
   <button class="btn btn-primary" (click)="logWeight()">Add Weight</button>
 
   <div class="mt-5">
+    <!-- Display weight log entries in a table for the graph-->
     <canvas id="weightChart"></canvas>
   </div>
 </div>
